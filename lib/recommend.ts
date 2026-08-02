@@ -59,9 +59,13 @@ export function laneRecommendations(
   );
 }
 
-export function progressLabel(count: number) {
-  if (count >= 3) return "The account has been untangled.";
-  const remaining = 3 - count;
-  return `${remaining} decision${remaining === 1 ? "" : "s"} left to reshape the recommendations.`;
+export function bestOtherLane(
+  bundle: DemoBundle,
+  ownerLane: LaneId,
+  candidate: CorrectionCandidate,
+) {
+  return bundle.lanes
+    .filter((lane) => lane.id !== ownerLane)
+    .map((lane) => ({ lane, score: dot(normalize(lane.centroid), normalize(candidate.vector)) }))
+    .sort((left, right) => right.score - left.score)[0].lane.id;
 }
-

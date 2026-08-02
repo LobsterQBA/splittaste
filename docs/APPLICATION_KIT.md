@@ -4,7 +4,7 @@ Prepared only. Nothing has been submitted or sent.
 
 ## Project description
 
-SplitTaste is a noncommercial research demo that tests whether three user-controlled corrections can reduce offline recommendation interference in synthetic shared streaming households. It combines a reproducible MovieLens ETL and evaluation layer with a guided browser interaction that recalculates anonymous taste-lane recommendations locally.
+SplitTaste is a noncommercial research demo inspired by a common behavior: friends and household members often press play on the profile already open on a TV, mixing their preferences into someone else's recommendations. It tests whether a few user-controlled corrections can reduce that interference in synthetic shared streaming households. A reproducible MovieLens ETL and evaluation layer supports a two-question browser experience that reweights anonymous taste-lane recommendations locally.
 
 ## Resume bullets
 
@@ -15,17 +15,19 @@ The metric bullet is valid only while the committed `artifacts/evaluation.json` 
 
 ## 90-second demo script
 
-“Shared streaming accounts are usually modeled as one user. My hypothesis was that the account may not be incoherent at all; it may contain several coherent taste lanes mixed with the wrong weights.
+“The idea came from a very ordinary moment. When I watch something at a friend's home, or a friend uses my TV, we rarely stop to create or switch to a guest profile. We just press play. Later, those choices are mixed into the account owner's recommendations.
 
-This is SplitTaste. The opening row blends comedy, science fiction, and crime signals. The model finds three anonymous patterns, but it does not claim they are people. It selects three titles where a correction would carry the most information. I place each title into the lane where it belongs, and the recommendation rows recompute locally.
+Profiles can prevent that problem, but only if people remember in the moment. So I asked a different product question: can we repair a mixed recommendation profile with almost no effort?
+
+This is SplitTaste. It analyzes the mixed history and surfaces three anonymous taste patterns, but it does not claim those patterns are people. First, I choose which taste feels most like mine. Then it asks about one title where my answer carries high information: was this my choice, probably a guest's, or am I unsure? The interface immediately compares the blended row with a reweighted row. Other tastes are kept rather than deleted, and the guest label comes from me, not the model.
 
 Behind the interaction is a reproducible MovieLens 32M pipeline. I construct deterministic synthetic households, preserve the source-user mapping only for evaluation, and compare a blended baseline, inferred lanes, and an oracle. The evidence panel reports clustering, ranking, correction-curve, and abstention metrics. Offline results are never presented as engagement lift.
 
-The product decision I wanted to demonstrate is that metrics should close a user-facing loop. The next test would be whether real account owners understand taste lanes and whether three questions are enough to produce a useful correction.”
+The product decision I wanted to demonstrate is that personalization metrics should close a user-facing loop. The offline result supports a narrow ranking improvement after three confirmations, while weak identity recovery reinforces the product boundary: help users reweight tastes, do not pretend to identify people. The next test would be whether real account owners understand this two-question repair and find the result useful.”
 
 ## Connect note
 
-Hi [Name], I’m applying for the Prime Video BIE role. I built SplitTaste, a MovieLens research demo exploring whether three user choices can untangle recommendations in a shared account. I would value your perspective on the product and measurement approach.
+Hi [Name], I’m applying for the Prime Video BIE role. I built SplitTaste, a MovieLens research demo inspired by friends watching on the profile already open on a TV. It explores whether a few user choices can repair mixed recommendations. I’d value your perspective.
 
 ## Likely interview questions
 

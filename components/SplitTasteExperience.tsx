@@ -1,18 +1,10 @@
 "use client";
 
-import {
-  DndContext,
-  DragEndEvent,
-  KeyboardSensor,
-  PointerSensor,
-  useDraggable,
-  useDroppable,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
 import { useMemo, useRef, useState } from "react";
-import { laneRecommendations, progressLabel, type Assignments } from "@/lib/recommend";
-import type { CorrectionCandidate, DemoBundle, LaneId, MovieVector, TasteLane } from "@/types/demo";
+import { bestOtherLane, laneRecommendations, type Assignments } from "@/lib/recommend";
+import type { DemoBundle, LaneId, MovieVector } from "@/types/demo";
+
+type GuestAnswer = "mine" | "guest" | "unsure";
 
 function ArrowIcon() {
   return (
@@ -22,84 +14,9 @@ function ArrowIcon() {
   );
 }
 
-function DraggableTitle({ candidate, assigned }: { candidate: CorrectionCandidate; assigned?: LaneId }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: candidate.movieId,
-    data: { candidate },
-  });
-  const style = transform
-    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
-    : undefined;
-
+function RecommendationRow({ movies, tone = "dark" }: { movies: MovieVector[]; tone?: "dark" | "light" }) {
   return (
-    <article
-      ref={setNodeRef}
-      style={style}
-      className={`question-card ${isDragging ? "is-dragging" : ""} ${assigned ? "is-assigned" : ""}`}
-      {...listeners}
-      {...attributes}
-    >
-      <div className="card-index">0{candidate.impactScore.toFixed(0)}</div>
-      <div>
-        <p className="micro-label">High-impact title</p>
-        <h3>{candidate.title}</h3>
-        <p>{candidate.genres.slice(0, 3).join(" · ")}</p>
-      </div>
-      <div className="uncertainty-mark" aria-label={`${Math.round((1 - candidate.assignmentConfidence) * 100)} percent uncertain`}>
-        {assigned ? "SET" : `${Math.round((1 - candidate.assignmentConfidence) * 100)}% ?`}
-      </div>
-    </article>
-  );
-}
-
-function LaneDropZone({
-  lane,
-  assignedTitles,
-  onAssign,
-  activeCandidate,
-}: {
-  lane: TasteLane;
-  assignedTitles: CorrectionCandidate[];
-  onAssign: (laneId: LaneId) => void;
-  activeCandidate: string | null;
-}) {
-  const { isOver, setNodeRef } = useDroppable({ id: lane.id });
-  return (
-    <section
-      ref={setNodeRef}
-      className={`taste-lane ${isOver ? "is-over" : ""}`}
-      style={{ "--lane-accent": lane.accent } as React.CSSProperties}
-    >
-      <div className="lane-rule" />
-      <p className="micro-label">{lane.eyebrow}</p>
-      <h3>{lane.name}</h3>
-      <p className="lane-description">{lane.description}</p>
-      <div className="anchor-stack">
-        {lane.anchorTitles.slice(0, 3).map((title) => (
-          <span key={title}>{title}</span>
-        ))}
-      </div>
-      {assignedTitles.length > 0 && (
-        <div className="assigned-stack" aria-label={`Titles assigned to ${lane.name}`}>
-          {assignedTitles.map((title) => (
-            <span key={title.movieId}>+ {title.title}</span>
-          ))}
-        </div>
-      )}
-      <button
-        className="lane-assign-button"
-        disabled={!activeCandidate}
-        onClick={() => onAssign(lane.id)}
-      >
-        Place selected title here
-      </button>
-    </section>
-  );
-}
-
-function RecommendationRow({ movies, compact = false }: { movies: MovieVector[]; compact?: boolean }) {
-  return (
-    <div className={`recommendation-row ${compact ? "compact" : ""}`}>
+    <div className={`recommendation-row ${tone}`}>
       {movies.map((movie, index) => (
         <article className="recommendation-card" key={`${movie.movieId}-${index}`}>
           <span className="rank">{String(index + 1).padStart(2, "0")}</span>
@@ -119,31 +36,30 @@ function Evidence({ bundle }: { bundle: DemoBundle }) {
   return (
     <details className="evidence-panel">
       <summary>
-        <span>Evidence, not engagement claims</span>
-        <span className="summary-action">Open methodology + metrics</span>
+        <span>How we tested the idea</span>
+        <span className="summary-action">Open data + metrics</span>
       </summary>
       <div className="evidence-grid">
         <div className="metric-lead">
           <p className="micro-label">Offline NDCG@10</p>
           <strong>{evaluation.ndcgSplitTaste.toFixed(3)}</strong>
-          <span>SplitTaste · {evaluation.householdCount} synthetic households</span>
+          <span>after three confirmations · {evaluation.householdCount} synthetic households</span>
         </div>
         <dl>
-          <div><dt>Blended</dt><dd>{evaluation.ndcgBlended.toFixed(3)}</dd></div>
-          <div><dt>SplitTaste</dt><dd>{evaluation.ndcgSplitTaste.toFixed(3)}</dd></div>
-          <div><dt>Oracle bound</dt><dd>{evaluation.ndcgOracle.toFixed(3)}</dd></div>
-          <div><dt>ARI / NMI</dt><dd>{evaluation.ari.toFixed(2)} / {evaluation.nmi.toFixed(2)}</dd></div>
-          <div><dt>Lane-count accuracy</dt><dd>{percent(evaluation.laneCountAccuracy)}</dd></div>
+          <div><dt>One blended account</dt><dd>{evaluation.ndcgBlended.toFixed(3)}</dd></div>
+          <div><dt>SplitTaste, 3 answers</dt><dd>{evaluation.ndcgSplitTaste.toFixed(3)}</dd></div>
+          <div><dt>Oracle upper bound</dt><dd>{evaluation.ndcgOracle.toFixed(3)}</dd></div>
+          <div><dt>Lane recovery ARI / NMI</dt><dd>{evaluation.ari.toFixed(2)} / {evaluation.nmi.toFixed(2)}</dd></div>
           <div><dt>Abstention precision</dt><dd>{percent(evaluation.abstentionPrecision)}</dd></div>
-          <div><dt>Coverage</dt><dd>{percent(evaluation.abstentionCoverage)}</dd></div>
+          <div><dt>Abstention coverage</dt><dd>{percent(evaluation.abstentionCoverage)}</dd></div>
         </dl>
         <div className="claim-box">
           <span className={evaluation.claimSupported ? "claim-dot supported" : "claim-dot"} />
           <div>
-            <strong>{evaluation.claimSupported ? "Offline claim gate passed" : "Hypothesis under evaluation"}</strong>
+            <strong>{evaluation.claimSupported ? "Offline ranking improvement supported" : "Hypothesis under evaluation"}</strong>
             <p>
-              95% CI for NDCG delta: [{evaluation.deltaCi95[0].toFixed(3)}, {evaluation.deltaCi95[1].toFixed(3)}].
-              This is not measured viewing or engagement lift.
+              95% CI for the NDCG delta: [{evaluation.deltaCi95[0].toFixed(3)}, {evaluation.deltaCi95[1].toFixed(3)}].
+              This does not measure viewing time, engagement, retention, or production lift.
             </p>
           </div>
         </div>
@@ -153,165 +69,222 @@ function Evidence({ bundle }: { bundle: DemoBundle }) {
 }
 
 export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
-  const [assignments, setAssignments] = useState<Assignments>({});
-  const [activeCandidate, setActiveCandidate] = useState<string | null>(null);
+  const [ownerLane, setOwnerLane] = useState<LaneId | null>(null);
+  const [guestAnswer, setGuestAnswer] = useState<GuestAnswer | null>(null);
   const resultsRef = useRef<HTMLElement>(null);
-  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor));
-  const assignedCount = Object.keys(assignments).length;
-  const complete = assignedCount >= 3;
+  const candidate = bundle.correctionCandidates[0];
+  const complete = ownerLane !== null && guestAnswer !== null;
+
+  const assignments = useMemo<Assignments>(() => {
+    if (!ownerLane || !guestAnswer || guestAnswer === "unsure") return {};
+    return {
+      [candidate.movieId]: guestAnswer === "mine"
+        ? ownerLane
+        : bestOtherLane(bundle, ownerLane, candidate),
+    };
+  }, [bundle, candidate, guestAnswer, ownerLane]);
+
   const recommendations = useMemo(
     () => laneRecommendations(bundle, assignments, 4),
     [bundle, assignments],
   );
 
-  const assign = (movieId: string, laneId: LaneId) => {
-    setAssignments((current) => ({ ...current, [movieId]: laneId }));
-    setActiveCandidate(null);
-  };
+  const selectedLane = bundle.lanes.find((lane) => lane.id === ownerLane);
+  const mixedTitles = [
+    candidate.title,
+    ...bundle.lanes.flatMap((lane) => lane.anchorTitles.slice(0, 2)),
+  ].slice(0, 7);
 
-  const assignSelected = (laneId: LaneId) => {
-    if (activeCandidate) assign(activeCandidate, laneId);
+  const reset = () => {
+    setOwnerLane(null);
+    setGuestAnswer(null);
+    document.getElementById("repair")?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const onDragEnd = ({ active, over }: DragEndEvent) => {
-    if (over && bundle.lanes.some((lane) => lane.id === over.id)) {
-      assign(String(active.id), over.id as LaneId);
-    }
-  };
-
-  const scrollToWorkspace = () => document.getElementById("untangle")?.scrollIntoView({ behavior: "smooth" });
-  const scrollToResults = () => resultsRef.current?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <main>
       <div className="grain" />
       <nav className="masthead" aria-label="Primary">
         <a href="#top" className="wordmark">SplitTaste<span>●</span></a>
-        <div className="nav-note">Independent, noncommercial research demo</div>
-        <a href="#evidence">Method / 01</a>
+        <div className="nav-note">A user-controlled recommendation repair demo</div>
+        <a href="#evidence">Evidence / 04</a>
       </nav>
 
       <section className="hero" id="top">
-        <div className="hero-kicker">
-          <span>Shared household</span>
-          <span>{bundle.account.historyCount.toLocaleString()} rating events</span>
-          <span>{bundle.account.overlapCohort}</span>
-        </div>
+        <p className="eyebrow">A familiar streaming problem</p>
         <h1>
-          Your account<br />isn&apos;t <em>confused.</em>
+          My friend used<br />my TV. Now my<br /><em>recommendations<br />feel like theirs.</em>
         </h1>
         <div className="hero-bottom">
           <p>
-            It contains three consistent tastes.<br />Make three choices. Untangle the recommendations.
+            They pressed play on my profile. I didn&apos;t stop the movie to create a guest account.
+            A few nights later, my home screen no longer felt like mine.
           </p>
-          <button className="primary-action" onClick={scrollToWorkspace}>
-            Untangle this account <ArrowIcon />
+          <button className="primary-action" onClick={() => document.getElementById("moment")?.scrollIntoView({ behavior: "smooth" })}>
+            See what happened <ArrowIcon />
           </button>
         </div>
         <div className="signal-line" aria-hidden="true">
-          {Array.from({ length: 42 }, (_, index) => (
-            <i key={index} style={{ height: `${12 + ((index * 17) % 52)}px` }} />
+          {Array.from({ length: 42 }, (_, index) => <i key={index} style={{ height: `${12 + ((index * 17) % 52)}px` }} />)}
+        </div>
+      </section>
+
+      <section className="moment" id="moment">
+        <div className="moment-copy">
+          <p className="section-number">01 / The moment</p>
+          <h2>Profiles solve the data problem.<br /><em>They don&apos;t solve the human moment.</em></h2>
+          <p className="body-copy">
+            Switching profiles works when people remember. But on a couch, at a friend&apos;s place,
+            the natural action is to press play. The result is one history carrying several different tastes.
+          </p>
+        </div>
+        <div className="remote-scene" aria-label="A guest presses play without switching profiles">
+          <div className="profile-pill"><span>●</span> Your profile</div>
+          <div className="remote-button">▶</div>
+          <div className="remote-caption">The lowest-friction choice wins.</div>
+        </div>
+      </section>
+
+      <section className="mixed-history">
+        <p className="section-number">02 / One account, mixed signals</p>
+        <div className="history-header">
+          <h2>The account remembers the titles.<br />It doesn&apos;t know the context.</h2>
+          <p>
+            SplitTaste looks for recurring taste patterns in the mixed history.
+            It does not identify people, ages, relationships, or who owns the account.
+          </p>
+        </div>
+        <div className="title-stream" aria-label="Example titles from a mixed history">
+          {mixedTitles.map((title, index) => (
+            <span key={`${title}-${index}`} className={`stream-title stream-${(index % 3) + 1}`}>{title}</span>
           ))}
         </div>
+        <button className="primary-action repair-cta" onClick={() => document.getElementById("repair")?.scrollIntoView({ behavior: "smooth" })}>
+          Fix my recommendations <ArrowIcon />
+        </button>
       </section>
 
-      <section className="diagnosis">
-        <p className="section-number">01 / Diagnosis</p>
-        <p className="diagnosis-statement">
-          One recommendation row is averaging together signals that should stay distinct.
-        </p>
-        <RecommendationRow movies={bundle.blendedRecommendations.slice(0, 4)} compact />
-        <div className="blend-caption">
-          <span>Current blend</span><span>Everything influences everything</span>
-        </div>
-      </section>
-
-      <DndContext id="splittaste-lane-assignment" sensors={sensors} onDragEnd={onDragEnd}>
-        <section className="workspace" id="untangle">
-          <header className="section-header">
-            <div>
-              <p className="section-number">02 / Three decisions</p>
-              <h2>Put each title where it feels at home.</h2>
-            </div>
-            <div className="progress-ring" aria-label={`${assignedCount} of 3 decisions complete`}>
-              <strong>{assignedCount}</strong><span>/ 3</span>
-            </div>
-          </header>
-
-          <p className="interaction-note" aria-live="polite">
-            {progressLabel(assignedCount)} Drag a card, or select it and use a lane button.
-          </p>
-
-          <div className="question-deck">
-            {bundle.correctionCandidates.slice(0, 3).map((candidate) => (
-              <div
-                className={`question-shell ${activeCandidate === candidate.movieId ? "is-selected" : ""}`}
-                key={candidate.movieId}
-              >
-                <DraggableTitle candidate={candidate} assigned={assignments[candidate.movieId]} />
-                <button
-                  className="select-title-button"
-                  onClick={() => setActiveCandidate(candidate.movieId)}
-                  aria-pressed={activeCandidate === candidate.movieId}
-                >
-                  {activeCandidate === candidate.movieId ? "Selected" : "Select title"}
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <div className="lane-grid">
-            {bundle.lanes.map((lane) => (
-              <LaneDropZone
-                key={lane.id}
-                lane={lane}
-                activeCandidate={activeCandidate}
-                onAssign={assignSelected}
-                assignedTitles={bundle.correctionCandidates.filter(
-                  (candidate) => assignments[candidate.movieId] === lane.id,
-                )}
-              />
-            ))}
-          </div>
-
-          {complete && (
-            <button className="reveal-button" onClick={scrollToResults}>
-              See what changed <ArrowIcon />
-            </button>
-          )}
-        </section>
-      </DndContext>
-
-      <section className={`results ${complete ? "is-revealed" : ""}`} ref={resultsRef}>
-        <header className="section-header">
+      <section className="repair" id="repair">
+        <header className="repair-header">
           <div>
-            <p className="section-number">03 / Reweighted</p>
-            <h2>Three lanes. Three different next choices.</h2>
+            <p className="section-number">03 / A two-question repair</p>
+            <h2>We found three consistent<br />taste patterns.</h2>
           </div>
-          <div className="result-stamp">Updated locally<br />No identity inferred</div>
+          <div className="privacy-note">You label the pattern.<br />The model does not label the person.</div>
         </header>
-        {bundle.lanes.map((lane) => (
-          <div className="result-lane" key={lane.id} style={{ "--lane-accent": lane.accent } as React.CSSProperties}>
-            <div className="result-lane-title">
-              <span />
-              <div><p>{lane.eyebrow}</p><h3>{lane.name}</h3></div>
-            </div>
-            <RecommendationRow movies={recommendations[lane.id]} />
+
+        <fieldset className="question-block">
+          <legend><span>Question 1 of 2</span>Which taste feels most like yours?</legend>
+          <div className="taste-options">
+            {bundle.lanes.map((lane) => (
+              <button
+                type="button"
+                key={lane.id}
+                className={`taste-option ${ownerLane === lane.id ? "selected" : ""}`}
+                style={{ "--lane-accent": lane.accent } as React.CSSProperties}
+                onClick={() => { setOwnerLane(lane.id); setGuestAnswer(null); }}
+                aria-pressed={ownerLane === lane.id}
+              >
+                <span className="lane-dot" />
+                <span className="micro-label">{lane.eyebrow}</span>
+                <strong>{lane.name}</strong>
+                <span className="lane-description">{lane.description}</span>
+                <span className="anchor-list">{lane.anchorTitles.slice(0, 3).join(" · ")}</span>
+                <span className="choose-label">{ownerLane === lane.id ? "This feels like me ✓" : "Choose this taste"}</span>
+              </button>
+            ))}
           </div>
-        ))}
+        </fieldset>
+
+        {ownerLane && (
+          <fieldset className="question-block second-question">
+            <legend>
+              <span>Question 2 of 2</span>
+              Was <em>{candidate.title}</em> your choice?
+            </legend>
+            <p className="question-context">
+              This title sits between patterns, so one answer changes the recommendation weights more than confirming an obvious title.
+            </p>
+            <div className="answer-options">
+              {([
+                ["mine", "Yes, that was me"],
+                ["guest", "No, probably a guest"],
+                ["unsure", "I'm not sure"],
+              ] as [GuestAnswer, string][]).map(([value, label]) => (
+                <button
+                  type="button"
+                  key={value}
+                  className={guestAnswer === value ? "selected" : ""}
+                  onClick={() => setGuestAnswer(value)}
+                  aria-pressed={guestAnswer === value}
+                >
+                  <span>{label}</span><span aria-hidden="true">→</span>
+                </button>
+              ))}
+            </div>
+          </fieldset>
+        )}
+
+        {complete && (
+          <button className="reveal-button" onClick={() => resultsRef.current?.scrollIntoView({ behavior: "smooth" })}>
+            See my repaired recommendations <ArrowIcon />
+          </button>
+        )}
+      </section>
+
+      <section className={`results ${complete ? "is-revealed" : ""}`} ref={resultsRef} aria-live="polite">
+        {complete && selectedLane && (
+          <>
+            <header className="result-hero">
+              <div>
+                <p className="section-number">The result</p>
+                <h2>Your recommendations<br /><em>feel like yours again.</em></h2>
+              </div>
+              <div className="result-stamp">Updated in your browser<br />No identity inferred</div>
+            </header>
+
+            <div className="comparison">
+              <section className="before-panel">
+                <div className="panel-heading"><span>Before</span><p>Every taste had equal influence.</p></div>
+                <RecommendationRow movies={bundle.blendedRecommendations.slice(0, 4)} tone="light" />
+              </section>
+              <section className="after-panel" style={{ "--lane-accent": selectedLane.accent } as React.CSSProperties}>
+                <div className="panel-heading">
+                  <span>After</span>
+                  <p><strong>{selectedLane.name}</strong> now leads this home row.</p>
+                </div>
+                <RecommendationRow movies={recommendations[selectedLane.id]} />
+              </section>
+            </div>
+
+            <div className="what-changed">
+              <div>
+                <p className="micro-label">What changed</p>
+                <h3>We changed the weights,<br />not the history.</h3>
+              </div>
+              <p>
+                Your chosen taste now leads the recommendation row. The other patterns are kept, not deleted,
+                and can still be used for a guest night or another household member. “Guest” was your answer—not a model inference.
+              </p>
+              <button onClick={reset}>Undo and try another answer</button>
+            </div>
+          </>
+        )}
       </section>
 
       <section id="evidence" className="evidence-section">
-        <p className="section-number">04 / Proof, with boundaries</p>
-        <h2>The interface is the story.<br />The evaluation is the receipt.</h2>
+        <p className="section-number">04 / Evidence, with boundaries</p>
+        <h2>A product idea backed by<br />an honest offline test.</h2>
+        <p className="evidence-intro">
+          MovieLens has anonymous rating events, not households or confirmed watch sessions. We therefore combined real users into
+          deterministic synthetic shared accounts, kept the original mapping only for evaluation, and tested whether a few corrections improve ranking.
+        </p>
         <Evidence bundle={bundle} />
       </section>
 
       <footer>
         <div className="footer-thesis">Shared accounts are mixtures<br />with the wrong weights.</div>
-        <div className="footer-disclosures">
-          {bundle.disclosures.map((item) => <p key={item}>{item}</p>)}
-        </div>
+        <div className="footer-disclosures">{bundle.disclosures.map((item) => <p key={item}>{item}</p>)}</div>
         <div className="footer-mark">ST / 2026</div>
       </footer>
     </main>

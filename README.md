@@ -2,7 +2,7 @@
 
 **Shared accounts are not confused profiles. They are mixtures with the wrong weights.**
 
-SplitTaste is an independent, noncommercial research demo about recommendation interference inside shared streaming accounts. It separates one blended rating history into anonymous taste lanes, asks for three high-information corrections, and recomputes recommendations immediately.
+SplitTaste is an independent, noncommercial research demo about a familiar streaming problem: a friend or family member presses play on your profile, and their choices begin reshaping your home screen. Instead of demanding perfect profile switching, SplitTaste finds anonymous taste patterns, asks two plain-language questions, and reweights recommendations immediately.
 
 No identity is inferred. No demographic or account-sharing claim is made.
 
@@ -10,13 +10,15 @@ No identity is inferred. No demographic or account-sharing claim is made.
 
 ## The 30-second demo
 
-1. Open one representative synthetic shared household.
-2. See three explainable taste lanes hidden inside the blended history.
-3. Place three uncertain titles into the lane where each feels at home.
-4. Compare the old blended row with three recalculated recommendation rows.
-5. Open **Evidence** to inspect the offline evaluation and its boundaries.
+1. Start with the real-life moment: a friend watched on your TV without switching profiles.
+2. See why the account remembers the titles but not the social context.
+3. Choose which of three anonymous taste patterns feels most like yours.
+4. Answer whether one high-information title was your choice, probably a guest's, or uncertain.
+5. Compare the blended row with your repaired row, then open **Evidence** for the offline test and its boundaries.
 
 The interface uses titles, genres, and tags only. It does not use movie posters or external metadata calls.
+
+![Before and after recommendation repair](docs/splittaste-results.png)
 
 ## Measured result
 
@@ -35,7 +37,7 @@ The more important limitation is persona recovery: ARI was 0.0677 and automatic 
 
 ## Why this exists
 
-A shared account can contain several internally coherent preferences. Averaging them together may create recommendation interference: everyone influences everything, and nobody gets a clean signal.
+A shared account can contain several internally coherent preferences. Averaging them together may create recommendation interference: everyone influences everything, and nobody gets a clean signal. Profiles can prevent the problem, but only when people remember to switch before pressing play. SplitTaste explores a recovery loop for the moments when they do not.
 
 SplitTaste tests a narrower hypothesis:
 
@@ -79,7 +81,7 @@ flowchart LR
 
 - **Data layer:** DuckDB normalizes the official CSV files to compressed Parquet.
 - **Model layer:** Truncated SVD learns 32-dimensional movie representations from a deterministic user cohort. Synthetic households combine 2–4 real anonymized rating histories.
-- **Interaction layer:** uncertainty and estimated ranking impact determine which titles are worth asking about.
+- **Interaction layer:** the user voluntarily labels their own taste pattern; uncertainty and estimated ranking impact determine which title is worth asking about next. “Guest” is never inferred by the model.
 - **Product layer:** the public `DemoBundle` contains no MovieLens user IDs or evaluator ground truth. Recommendation recalculation is local and deterministic.
 
 ## Evaluation contract

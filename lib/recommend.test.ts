@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { laneRecommendations, progressLabel } from "./recommend";
+import { bestOtherLane, laneRecommendations } from "./recommend";
 import type { DemoBundle } from "@/types/demo";
 
 const bundle = {
@@ -24,9 +24,7 @@ describe("laneRecommendations", () => {
     expect(result["lane-b"][0].movieId).toBe("y");
   });
 
-  it("summarizes correction progress", () => {
-    expect(progressLabel(0)).toContain("3 decisions");
-    expect(progressLabel(3)).toBe("The account has been untangled.");
+  it("places a guest title into the closest non-owner lane", () => {
+    expect(bestOtherLane(bundle, "lane-a", bundle.correctionCandidates[0])).toBe("lane-b");
   });
 });
-
