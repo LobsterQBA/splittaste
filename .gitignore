@@ -1,0 +1,16 @@
+.DS_Store
+.next/
+out/
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+data/raw/
+data/processed/
+data/evaluator/
+artifacts/private/
+.env*
+!.env.example
+

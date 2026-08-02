@@ -1,0 +1,3595 @@
+{
+  "dataset_snapshot_date": "2023-10-13",
+  "seed": 3204218,
+  "rating_event_definition": "One MovieLens rating record; not a confirmed watch or watch session.",
+  "candidate_catalog": "Top 15,000 sampled-cohort movies by rating count.",
+  "household_method": "Deterministic synthetic grouping of 2-4 anonymized users by preference-overlap strata.",
+  "summary": {
+    "ari": 0.06774805143209507,
+    "nmi": 0.14063147008558685,
+    "heldout_assignment_accuracy": 0.5218430958077134,
+    "abstention_precision": 0.5704872320193153,
+    "abstention_coverage": 0.4266072423703944,
+    "ndcg_blended": 0.029183555193492236,
+    "recall_blended": 0.013828753380836093,
+    "ndcg_split": 0.03868185158023468,
+    "recall_split": 0.016945466048242444,
+    "ndcg_oracle": 0.07168524301167649,
+    "negative_transfer": 0.04250168781818426,
+    "ndcg_delta_ci95": [
+      0.00010346690107571573,
+      0.022567207902366812
+    ],
+    "claim_supported": true,
+    "household_count": 72,
+    "lane_count_accuracy": 0.3194444444444444,
+    "correction_curve": [
+      {
+        "confirmations": 0,
+        "ndcgAt10": 0.03868185158023468,
+        "recallAt10": 0.016945466048242444,
+        "assignmentAccuracy": 0.5218430958077134
+      },
+      {
+        "confirmations": 3,
+        "ndcgAt10": 0.04055254838652952,
+        "recallAt10": 0.01888856754888498,
+        "assignmentAccuracy": 0.5267223786615206
+      },
+      {
+        "confirmations": 5,
+        "ndcgAt10": 0.04199418555753773,
+        "recallAt10": 0.019842826389173236,
+        "assignmentAccuracy": 0.5294799919608377
+      },
+      {
+        "confirmations": 10,
+        "ndcgAt10": 0.04465423051223372,
+        "recallAt10": 0.0205339639553108,
+        "assignmentAccuracy": 0.5370651187925451
+      }
+    ],
+    "cohorts": {
+      "overlap": {
+        "clearly different": {
+          "households": 24,
+          "ndcg_blended": 0.02236696191657425,
+          "ndcg_split": 0.0319529945464724,
+          "ari": 0.0846065551733262
+        },
+        "partially overlapping": {
+          "households": 24,
+          "ndcg_blended": 0.03252619001361221,
+          "ndcg_split": 0.0405164385686379,
+          "ari": 0.06410343799408445
+        },
+        "highly similar": {
+          "households": 24,
+          "ndcg_blended": 0.032657513650290244,
+          "ndcg_split": 0.04918821204447826,
+          "ari": 0.054534161128874575
+        }
+      },
+      "household_size": {
+        "2": {
+          "households": 24,
+          "ndcg_blended": 0.03882326820848916,
+          "ndcg_split": 0.05098898202838404,
+          "ari": 0.10352869488797557
+        },
+        "3": {
+          "households": 24,
+          "ndcg_blended": 0.02945557281658243,
+          "ndcg_split": 0.044849325341893904,
+          "ari": 0.0641999195514896
+        },
+        "4": {
+          "households": 24,
+          "ndcg_blended": 0.01927182455540512,
+          "ndcg_split": 0.025819337789310615,
+          "ari": 0.03551553985682004
+        }
+      },
+      "activity": {
+        "higher": {
+          "households": 24,
+          "ndcg_blended": 0.01943640393504632,
+          "ndcg_split": 0.036292075574597564,
+          "ari": 0.03917752936144324
+        },
+        "middle": {
+          "households": 24,
+          "ndcg_blended": 0.03360815673370474,
+          "ndcg_split": 0.029219703909683592,
+          "ari": 0.04429714501993889
+        },
+        "lower": {
+          "households": 24,
+          "ndcg_blended": 0.034506104911725656,
+          "ndcg_split": 0.0561458656753074,
+          "ari": 0.1197694799149031
+        }
+      },
+      "sparsity": {
+        "dense": {
+          "households": 24,
+          "ndcg_blended": 0.02121256396063316,
+          "ndcg_split": 0.033917718682120915,
+          "ari": 0.03658425444087706
+        },
+        "medium": {
+          "households": 24,
+          "ndcg_blended": 0.035508226358999195,
+          "ndcg_split": 0.03725894526068698,
+          "ari": 0.052041222720309
+        },
+        "sparse": {
+          "households": 24,
+          "ndcg_blended": 0.030829875260844363,
+          "ndcg_split": 0.050480981216780664,
+          "ari": 0.11461867713509916
+        }
+      }
+    }
+  },
+  "households": [
+    {
+      "household_id": "synthetic-001",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "clearly different",
+      "activity": 853,
+      "catalog_density": 0.05486666666666667,
+      "ari": 0.4052301191042633,
+      "nmi": 0.40545278665252404,
+      "heldout_assignment_accuracy": 0.8194607268464243,
+      "abstention_precision": 0.85546875,
+      "abstention_coverage": 0.6002344665885111,
+      "ndcg_blended": 0.05502294157452005,
+      "recall_blended": 0.008771929824561403,
+      "ndcg_split": 0.047394182184775396,
+      "recall_split": 0.008771929824561403,
+      "ndcg_oracle": 0.03668196104968003,
+      "negative_transfer": -0.01834098052484002,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.047394182184775396,
+          "recallAt10": 0.008771929824561403,
+          "assignmentAccuracy": 0.8194607268464243
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.08683333567399591,
+          "recallAt10": 0.02490096208262592,
+          "assignmentAccuracy": 0.8288393903868698
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.07920457628425126,
+          "recallAt10": 0.02490096208262592,
+          "assignmentAccuracy": 0.8323563892145369
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.07920457628425126,
+          "recallAt10": 0.02490096208262592,
+          "assignmentAccuracy": 0.8370457209847597
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-002",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 409,
+      "catalog_density": 0.026066666666666665,
+      "ari": 0.20315785825099056,
+      "nmi": 0.2534347353452582,
+      "heldout_assignment_accuracy": 0.6454767726161369,
+      "abstention_precision": 0.6942675159235668,
+      "abstention_coverage": 0.38386308068459657,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.13224593931268244,
+      "negative_transfer": 0.13224593931268244,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6454767726161369
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6528117359413202
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6552567237163814
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.022084741151463014,
+          "recallAt10": 0.023809523809523808,
+          "assignmentAccuracy": 0.6723716381418093
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-003",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 515,
+      "catalog_density": 0.030333333333333334,
+      "ari": 0.098609429511465,
+      "nmi": 0.2640756244292807,
+      "heldout_assignment_accuracy": 0.5048543689320388,
+      "abstention_precision": 0.8145161290322581,
+      "abstention_coverage": 0.2407766990291262,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.019599567244668836,
+      "recall_split": 0.009615384615384616,
+      "ndcg_oracle": 0.0749762579243736,
+      "negative_transfer": 0.0749762579243736,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.019599567244668836,
+          "recallAt10": 0.009615384615384616,
+          "assignmentAccuracy": 0.5048543689320388
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.019599567244668836,
+          "recallAt10": 0.009615384615384616,
+          "assignmentAccuracy": 0.5106796116504855
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.019599567244668836,
+          "recallAt10": 0.009615384615384616,
+          "assignmentAccuracy": 0.5145631067961165
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.019599567244668836,
+          "recallAt10": 0.009615384615384616,
+          "assignmentAccuracy": 0.5203883495145631
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-004",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "partially overlapping",
+      "activity": 184,
+      "catalog_density": 0.0114,
+      "ari": -0.0035795926691403195,
+      "nmi": 0.003449607610311824,
+      "heldout_assignment_accuracy": 0.5108695652173914,
+      "abstention_precision": 0.5,
+      "abstention_coverage": 0.6630434782608695,
+      "ndcg_blended": 0.031810394099475864,
+      "recall_blended": 0.045454545454545456,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": -0.031810394099475864,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5108695652173914
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5217391304347826
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5217391304347826
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5434782608695652
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-005",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 626,
+      "catalog_density": 0.033666666666666664,
+      "ari": -0.008086635910015873,
+      "nmi": 0.029291739742063547,
+      "heldout_assignment_accuracy": 0.3865814696485623,
+      "abstention_precision": 0.3620689655172414,
+      "abstention_coverage": 0.3706070287539936,
+      "ndcg_blended": 0.05368086260797995,
+      "recall_blended": 0.0196078431372549,
+      "ndcg_split": 0.024454640699786687,
+      "recall_split": 0.011111111111111112,
+      "ndcg_oracle": 0.0505873970260118,
+      "negative_transfer": -0.003093465581968144,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.024454640699786687,
+          "recallAt10": 0.011111111111111112,
+          "assignmentAccuracy": 0.3865814696485623
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.024454640699786687,
+          "recallAt10": 0.011111111111111112,
+          "assignmentAccuracy": 0.3865814696485623
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.024454640699786687,
+          "recallAt10": 0.011111111111111112,
+          "assignmentAccuracy": 0.38817891373801916
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.026132756326225113,
+          "recallAt10": 0.011111111111111112,
+          "assignmentAccuracy": 0.3913738019169329
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-006",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 773,
+      "catalog_density": 0.04206666666666667,
+      "ari": -0.016249815536079362,
+      "nmi": 0.14591306653460395,
+      "heldout_assignment_accuracy": 0.33376455368693403,
+      "abstention_precision": 0.441340782122905,
+      "abstention_coverage": 0.2315653298835705,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.03471561096838864,
+      "recall_split": 0.005555555555555556,
+      "ndcg_oracle": 0.09614844310344026,
+      "negative_transfer": 0.09614844310344026,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.03471561096838864,
+          "recallAt10": 0.005555555555555556,
+          "assignmentAccuracy": 0.33376455368693403
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.03471561096838864,
+          "recallAt10": 0.005555555555555556,
+          "assignmentAccuracy": 0.33635187580853815
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.03471561096838864,
+          "recallAt10": 0.005555555555555556,
+          "assignmentAccuracy": 0.33764553686934023
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.03471561096838864,
+          "recallAt10": 0.005555555555555556,
+          "assignmentAccuracy": 0.3428201811125485
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-007",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "highly similar",
+      "activity": 587,
+      "catalog_density": 0.036066666666666664,
+      "ari": 0.05742094379047837,
+      "nmi": 0.040344427940720726,
+      "heldout_assignment_accuracy": 0.6218057921635435,
+      "abstention_precision": 0.6487804878048781,
+      "abstention_coverage": 0.6984667802385008,
+      "ndcg_blended": 0.06493750582667039,
+      "recall_blended": 0.041666666666666664,
+      "ndcg_split": 0.047394182184775396,
+      "recall_split": 0.020833333333333332,
+      "ndcg_oracle": 0.15626455761077318,
+      "negative_transfer": 0.09132705178410279,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.047394182184775396,
+          "recallAt10": 0.020833333333333332,
+          "assignmentAccuracy": 0.6218057921635435
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.047394182184775396,
+          "recallAt10": 0.020833333333333332,
+          "assignmentAccuracy": 0.6218057921635435
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.047394182184775396,
+          "recallAt10": 0.020833333333333332,
+          "assignmentAccuracy": 0.6235093696763203
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.05502294157452005,
+          "recallAt10": 0.020833333333333332,
+          "assignmentAccuracy": 0.626916524701874
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-008",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 594,
+      "catalog_density": 0.034,
+      "ari": 0.04286541045496273,
+      "nmi": 0.05848486200412083,
+      "heldout_assignment_accuracy": 0.51010101010101,
+      "abstention_precision": 0.4883720930232558,
+      "abstention_coverage": 0.2895622895622896,
+      "ndcg_blended": 0.09544866325082309,
+      "recall_blended": 0.028985507246376812,
+      "ndcg_split": 0.14279514403613733,
+      "recall_split": 0.043478260869565216,
+      "ndcg_oracle": 0.11965140339054492,
+      "negative_transfer": 0.02420274013972183,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.14279514403613733,
+          "recallAt10": 0.043478260869565216,
+          "assignmentAccuracy": 0.51010101010101
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.14279514403613733,
+          "recallAt10": 0.043478260869565216,
+          "assignmentAccuracy": 0.5168350168350169
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.14279514403613733,
+          "recallAt10": 0.043478260869565216,
+          "assignmentAccuracy": 0.5202020202020202
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.14173614454200795,
+          "recallAt10": 0.043478260869565216,
+          "assignmentAccuracy": 0.5269360269360269
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-009",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 435,
+      "catalog_density": 0.0222,
+      "ari": 0.04617299496225975,
+      "nmi": 0.10009056766061811,
+      "heldout_assignment_accuracy": 0.38620689655172413,
+      "abstention_precision": 0.424,
+      "abstention_coverage": 0.28735632183908044,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.03864358489459957,
+      "negative_transfer": 0.03864358489459957,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.38620689655172413
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.3954022988505747
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.39770114942528734
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.40229885057471265
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-010",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "clearly different",
+      "activity": 377,
+      "catalog_density": 0.0248,
+      "ari": 0.19443283422756438,
+      "nmi": 0.21409281057693877,
+      "heldout_assignment_accuracy": 0.7214854111405835,
+      "abstention_precision": 0.7536231884057971,
+      "abstention_coverage": 0.7320954907161804,
+      "ndcg_blended": 0.09170490262420007,
+      "recall_blended": 0.034482758620689655,
+      "ndcg_split": 0.1100458831490401,
+      "recall_split": 0.017241379310344827,
+      "ndcg_oracle": 0.1100458831490401,
+      "negative_transfer": 0.018340980524840025,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.1100458831490401,
+          "recallAt10": 0.017241379310344827,
+          "assignmentAccuracy": 0.7214854111405835
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.06943122193677728,
+          "recallAt10": 0.017241379310344827,
+          "assignmentAccuracy": 0.726790450928382
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.06943122193677728,
+          "recallAt10": 0.017241379310344827,
+          "assignmentAccuracy": 0.726790450928382
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.1100458831490401,
+          "recallAt10": 0.017241379310344827,
+          "assignmentAccuracy": 0.7294429708222812
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-011",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 1325,
+      "catalog_density": 0.07986666666666667,
+      "ari": 0.007639924545734468,
+      "nmi": 0.1345776774214646,
+      "heldout_assignment_accuracy": 0.4830188679245283,
+      "abstention_precision": 0.562862669245648,
+      "abstention_coverage": 0.390188679245283,
+      "ndcg_blended": 0.021206929399650576,
+      "recall_blended": 0.011904761904761904,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.3110674044395534,
+      "negative_transfer": 0.2898604750399028,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4830188679245283
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4852830188679245
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.48603773584905663
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.48754716981132074
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-012",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 1260,
+      "catalog_density": 0.0716,
+      "ari": -0.020067971824861135,
+      "nmi": 0.07614861095200573,
+      "heldout_assignment_accuracy": 0.44285714285714284,
+      "abstention_precision": 0.2236842105263158,
+      "abstention_coverage": 0.30158730158730157,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.03794054776950885,
+      "recall_split": 0.019230769230769232,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.03794054776950885,
+          "recallAt10": 0.019230769230769232,
+          "assignmentAccuracy": 0.44285714285714284
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.03794054776950885,
+          "recallAt10": 0.019230769230769232,
+          "assignmentAccuracy": 0.44285714285714284
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.03794054776950885,
+          "recallAt10": 0.019230769230769232,
+          "assignmentAccuracy": 0.4444444444444444
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.03794054776950885,
+          "recallAt10": 0.019230769230769232,
+          "assignmentAccuracy": 0.44603174603174606
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-013",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "partially overlapping",
+      "activity": 393,
+      "catalog_density": 0.024866666666666665,
+      "ari": -0.02101666748474586,
+      "nmi": 0.07006666173763694,
+      "heldout_assignment_accuracy": 0.5139949109414759,
+      "abstention_precision": 0.5586854460093896,
+      "abstention_coverage": 0.5419847328244275,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5139949109414759
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5165394402035624
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5190839694656488
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5241730279898219
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-014",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 293,
+      "catalog_density": 0.017866666666666666,
+      "ari": 0.031623341089672734,
+      "nmi": 0.12687585205513885,
+      "heldout_assignment_accuracy": 0.4641638225255973,
+      "abstention_precision": 0.5087719298245614,
+      "abstention_coverage": 0.3890784982935154,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.06827808250619698,
+      "recall_split": 0.028985507246376812,
+      "ndcg_oracle": 0.12096230344473918,
+      "negative_transfer": 0.12096230344473918,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.06827808250619698,
+          "recallAt10": 0.028985507246376812,
+          "assignmentAccuracy": 0.4641638225255973
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.06827808250619698,
+          "recallAt10": 0.028985507246376812,
+          "assignmentAccuracy": 0.4709897610921502
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.06827808250619698,
+          "recallAt10": 0.028985507246376812,
+          "assignmentAccuracy": 0.4778156996587031
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.06827808250619698,
+          "recallAt10": 0.028985507246376812,
+          "assignmentAccuracy": 0.4812286689419795
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-015",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 632,
+      "catalog_density": 0.037866666666666667,
+      "ari": 0.03669155186972073,
+      "nmi": 0.11785819225388981,
+      "heldout_assignment_accuracy": 0.39082278481012656,
+      "abstention_precision": 0.487012987012987,
+      "abstention_coverage": 0.24367088607594936,
+      "ndcg_blended": 0.021285779410405253,
+      "recall_blended": 0.013888888888888888,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.100005812077313,
+      "negative_transfer": 0.07872003266690775,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.39082278481012656
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.3971518987341772
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.3987341772151899
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.40664556962025317
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-016",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "highly similar",
+      "activity": 428,
+      "catalog_density": 0.0256,
+      "ari": 0.005336602733041508,
+      "nmi": 0.0015707433392933695,
+      "heldout_assignment_accuracy": 0.5537383177570093,
+      "abstention_precision": 0.5286624203821656,
+      "abstention_coverage": 0.7336448598130841,
+      "ndcg_blended": 0.03919913448933767,
+      "recall_blended": 0.03571428571428571,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.06943122193677728,
+      "negative_transfer": 0.03023208744743961,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5537383177570093
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5607476635514018
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5607476635514018
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.572429906542056
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-017",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 424,
+      "catalog_density": 0.024266666666666666,
+      "ari": 0.021362591900299176,
+      "nmi": 0.04972063858475621,
+      "heldout_assignment_accuracy": 0.44339622641509435,
+      "abstention_precision": 0.5246913580246914,
+      "abstention_coverage": 0.38207547169811323,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.03668196104968003,
+      "recall_split": 0.016666666666666666,
+      "ndcg_oracle": 0.024454640699786687,
+      "negative_transfer": 0.024454640699786687,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.03668196104968003,
+          "recallAt10": 0.016666666666666666,
+          "assignmentAccuracy": 0.44339622641509435
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.03159612145651693,
+          "recallAt10": 0.016666666666666666,
+          "assignmentAccuracy": 0.4481132075471698
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.03159612145651693,
+          "recallAt10": 0.016666666666666666,
+          "assignmentAccuracy": 0.45047169811320753
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.03668196104968003,
+          "recallAt10": 0.016666666666666666,
+          "assignmentAccuracy": 0.46226415094339623
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-018",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 1116,
+      "catalog_density": 0.06266666666666666,
+      "ari": 0.03346213891169081,
+      "nmi": 0.09809047335713846,
+      "heldout_assignment_accuracy": 0.49014336917562723,
+      "abstention_precision": 0.28286852589641437,
+      "abstention_coverage": 0.224910394265233,
+      "ndcg_blended": 0.019599567244668836,
+      "recall_blended": 0.00641025641025641,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.019599567244668836,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.49014336917562723
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.492831541218638
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4946236559139785
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-019",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "clearly different",
+      "activity": 263,
+      "catalog_density": 0.015333333333333332,
+      "ari": -0.0037677731671774206,
+      "nmi": 1.804931464101161e-05,
+      "heldout_assignment_accuracy": 0.5247148288973384,
+      "abstention_precision": 0.5372340425531915,
+      "abstention_coverage": 0.714828897338403,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.14381317485706366,
+      "recall_split": 0.06274509803921569,
+      "ndcg_oracle": 0.047394182184775396,
+      "negative_transfer": 0.047394182184775396,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.14381317485706366,
+          "recallAt10": 0.06274509803921569,
+          "assignmentAccuracy": 0.5247148288973384
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.13924029471365185,
+          "recallAt10": 0.06274509803921569,
+          "assignmentAccuracy": 0.5285171102661597
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.21260421681301192,
+          "recallAt10": 0.06274509803921569,
+          "assignmentAccuracy": 0.532319391634981
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.2519021603975561,
+          "recallAt10": 0.06274509803921569,
+          "assignmentAccuracy": 0.5361216730038023
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-020",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 849,
+      "catalog_density": 0.048133333333333334,
+      "ari": 0.05663209121293838,
+      "nmi": 0.10433906712928431,
+      "heldout_assignment_accuracy": 0.4546525323910483,
+      "abstention_precision": 0.5283018867924528,
+      "abstention_coverage": 0.3745583038869258,
+      "ndcg_blended": 0.07360952101092912,
+      "recall_blended": 0.02370820668693009,
+      "ndcg_split": 0.0505873970260118,
+      "recall_split": 0.014184397163120567,
+      "ndcg_oracle": 0.14901877430897176,
+      "negative_transfer": 0.07540925329804264,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0505873970260118,
+          "recallAt10": 0.014184397163120567,
+          "assignmentAccuracy": 0.4546525323910483
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0505873970260118,
+          "recallAt10": 0.014184397163120567,
+          "assignmentAccuracy": 0.4581861012956419
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.05473986210210935,
+          "recallAt10": 0.014184397163120567,
+          "assignmentAccuracy": 0.4617196702002356
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.05605076215630362,
+          "recallAt10": 0.014184397163120567,
+          "assignmentAccuracy": 0.4652532391048292
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-021",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 879,
+      "catalog_density": 0.04646666666666667,
+      "ari": 0.09413200974039929,
+      "nmi": 0.22921962343552063,
+      "heldout_assignment_accuracy": 0.43458475540386804,
+      "abstention_precision": 0.5068493150684932,
+      "abstention_coverage": 0.24914675767918087,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.027511470787260024,
+      "negative_transfer": 0.027511470787260024,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.43458475540386804
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.43572241183162685
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4391353811149033
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4448236632536974
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-022",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "partially overlapping",
+      "activity": 190,
+      "catalog_density": 0.012333333333333333,
+      "ari": 0.4434292868561965,
+      "nmi": 0.3487410109519069,
+      "heldout_assignment_accuracy": 0.8368421052631579,
+      "abstention_precision": 0.8732394366197183,
+      "abstention_coverage": 0.7473684210526316,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.047394182184775396,
+      "recall_split": 0.03333333333333333,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.047394182184775396,
+          "recallAt10": 0.03333333333333333,
+          "assignmentAccuracy": 0.8368421052631579
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.047394182184775396,
+          "recallAt10": 0.03333333333333333,
+          "assignmentAccuracy": 0.8473684210526315
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.07232624621653219,
+          "recallAt10": 0.05416666666666667,
+          "assignmentAccuracy": 0.8526315789473684
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.07232624621653219,
+          "recallAt10": 0.05416666666666667,
+          "assignmentAccuracy": 0.8526315789473684
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-023",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 519,
+      "catalog_density": 0.030933333333333334,
+      "ari": 0.0612427812477733,
+      "nmi": 0.19930763514089636,
+      "heldout_assignment_accuracy": 0.5028901734104047,
+      "abstention_precision": 0.6033057851239669,
+      "abstention_coverage": 0.4662813102119461,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.02838103921387367,
+      "recall_split": 0.010416666666666666,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.02838103921387367,
+          "recallAt10": 0.010416666666666666,
+          "assignmentAccuracy": 0.5028901734104047
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.02838103921387367,
+          "recallAt10": 0.010416666666666666,
+          "assignmentAccuracy": 0.5028901734104047
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.02838103921387367,
+          "recallAt10": 0.010416666666666666,
+          "assignmentAccuracy": 0.5028901734104047
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.02838103921387367,
+          "recallAt10": 0.010416666666666666,
+          "assignmentAccuracy": 0.5067437379576107
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-024",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 926,
+      "catalog_density": 0.051133333333333336,
+      "ari": 0.022120369967676443,
+      "nmi": 0.08136199912984059,
+      "heldout_assignment_accuracy": 0.3952483801295896,
+      "abstention_precision": 0.33840304182509506,
+      "abstention_coverage": 0.2840172786177106,
+      "ndcg_blended": 0.07238074705871436,
+      "recall_blended": 0.023634453781512604,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.09052770586892682,
+      "negative_transfer": 0.018146958810212457,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.3952483801295896
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.398488120950324
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.40280777537796975
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4103671706263499
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-025",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "highly similar",
+      "activity": 223,
+      "catalog_density": 0.0134,
+      "ari": 0.09697326743655792,
+      "nmi": 0.05632060746672757,
+      "heldout_assignment_accuracy": 0.6636771300448431,
+      "abstention_precision": 0.6912751677852349,
+      "abstention_coverage": 0.6681614349775785,
+      "ndcg_blended": 0.06943122193677728,
+      "recall_blended": 0.016129032258064516,
+      "ndcg_split": 0.03668196104968003,
+      "recall_split": 0.016129032258064516,
+      "ndcg_oracle": 0.10414683290516592,
+      "negative_transfer": 0.03471561096838864,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.03668196104968003,
+          "recallAt10": 0.016129032258064516,
+          "assignmentAccuracy": 0.6636771300448431
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.672645739910314
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6771300448430493
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6816143497757847
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-026",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 345,
+      "catalog_density": 0.019533333333333333,
+      "ari": 0.14493633699965833,
+      "nmi": 0.18995351105788214,
+      "heldout_assignment_accuracy": 0.5768115942028985,
+      "abstention_precision": 0.6566265060240963,
+      "abstention_coverage": 0.4811594202898551,
+      "ndcg_blended": 0.047598381345379116,
+      "recall_blended": 0.02782608695652174,
+      "ndcg_split": 0.07813550330776664,
+      "recall_split": 0.043478260869565216,
+      "ndcg_oracle": 0.02838103921387367,
+      "negative_transfer": -0.019217342131505447,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.07813550330776664,
+          "recallAt10": 0.043478260869565216,
+          "assignmentAccuracy": 0.5768115942028985
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.07813550330776664,
+          "recallAt10": 0.043478260869565216,
+          "assignmentAccuracy": 0.5826086956521739
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.07813550330776664,
+          "recallAt10": 0.043478260869565216,
+          "assignmentAccuracy": 0.5855072463768116
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.07813550330776664,
+          "recallAt10": 0.043478260869565216,
+          "assignmentAccuracy": 0.5855072463768116
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-027",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 963,
+      "catalog_density": 0.04513333333333333,
+      "ari": 0.11261145589830165,
+      "nmi": 0.17727497699163905,
+      "heldout_assignment_accuracy": 0.45275181723779856,
+      "abstention_precision": 0.7049180327868853,
+      "abstention_coverage": 0.2533748701973001,
+      "ndcg_blended": 0.021285779410405253,
+      "recall_blended": 0.01,
+      "ndcg_split": 0.01656355586359726,
+      "recall_split": 0.01,
+      "ndcg_oracle": 0.019599567244668836,
+      "negative_transfer": -0.001686212165736417,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.01656355586359726,
+          "recallAt10": 0.01,
+          "assignmentAccuracy": 0.45275181723779856
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.01735780548419432,
+          "recallAt10": 0.01,
+          "assignmentAccuracy": 0.45586708203530635
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.01735780548419432,
+          "recallAt10": 0.01,
+          "assignmentAccuracy": 0.45794392523364486
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.03326300253393225,
+          "recallAt10": 0.015952380952380954,
+          "assignmentAccuracy": 0.4620976116303219
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-028",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "clearly different",
+      "activity": 678,
+      "catalog_density": 0.04253333333333333,
+      "ari": -0.04765924951334265,
+      "nmi": 0.009167030222484718,
+      "heldout_assignment_accuracy": 0.7330383480825958,
+      "abstention_precision": 0.493006993006993,
+      "abstention_coverage": 0.4218289085545723,
+      "ndcg_blended": 0.05919139647768146,
+      "recall_blended": 0.07142857142857142,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.03312711172719452,
+      "negative_transfer": -0.026064284750486937,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.7330383480825958
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.7374631268436578
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.7404129793510325
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.7463126843657817
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-029",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 209,
+      "catalog_density": 0.013533333333333333,
+      "ari": 0.31626579433418495,
+      "nmi": 0.40015500701567097,
+      "heldout_assignment_accuracy": 0.722488038277512,
+      "abstention_precision": 0.9473684210526315,
+      "abstention_coverage": 0.45454545454545453,
+      "ndcg_blended": 0.026132756326225113,
+      "recall_blended": 0.023809523809523808,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": -0.026132756326225113,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.722488038277512
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.7368421052631579
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.7464114832535885
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.7751196172248804
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-030",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 1197,
+      "catalog_density": 0.07446666666666667,
+      "ari": -0.01542541405875031,
+      "nmi": 0.12884494451847964,
+      "heldout_assignment_accuracy": 0.4218880534670008,
+      "abstention_precision": 0.20857142857142857,
+      "abstention_coverage": 0.29239766081871343,
+      "ndcg_blended": 0.08592417284803637,
+      "recall_blended": 0.016304347826086956,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.14899103710641415,
+      "negative_transfer": 0.06306686425837778,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4218880534670008
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4243943191311612
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4252297410192147
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4277360066833751
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-031",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "partially overlapping",
+      "activity": 198,
+      "catalog_density": 0.012466666666666666,
+      "ari": 0.06825591854296151,
+      "nmi": 0.08912466735875957,
+      "heldout_assignment_accuracy": 0.6414141414141414,
+      "abstention_precision": 0.823076923076923,
+      "abstention_coverage": 0.6565656565656566,
+      "ndcg_blended": 0.03668196104968003,
+      "recall_blended": 0.025,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.042571558820810505,
+      "negative_transfer": 0.005889597771130475,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6414141414141414
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6464646464646465
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6464646464646465
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6464646464646465
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-032",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 885,
+      "catalog_density": 0.048466666666666665,
+      "ari": 0.024976033694209365,
+      "nmi": 0.08314068344258593,
+      "heldout_assignment_accuracy": 0.4542372881355932,
+      "abstention_precision": 0.2727272727272727,
+      "abstention_coverage": 0.36045197740112994,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.06281471737590515,
+      "negative_transfer": 0.06281471737590515,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4542372881355932
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.45649717514124294
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.45875706214689266
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.46214689265536724
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-033",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 1130,
+      "catalog_density": 0.05993333333333333,
+      "ari": 0.03309903293988961,
+      "nmi": 0.10064586952551209,
+      "heldout_assignment_accuracy": 0.35929203539823007,
+      "abstention_precision": 0.37244897959183676,
+      "abstention_coverage": 0.34690265486725663,
+      "ndcg_blended": 0.018340980524840015,
+      "recall_blended": 0.0025252525252525255,
+      "ndcg_split": 0.05120856187964773,
+      "recall_split": 0.005050505050505051,
+      "ndcg_oracle": 0.16015294952033166,
+      "negative_transfer": 0.14181196899549164,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.05120856187964773,
+          "recallAt10": 0.005050505050505051,
+          "assignmentAccuracy": 0.35929203539823007
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.05120856187964773,
+          "recallAt10": 0.005050505050505051,
+          "assignmentAccuracy": 0.36194690265486723
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.05120856187964773,
+          "recallAt10": 0.005050505050505051,
+          "assignmentAccuracy": 0.36460176991150445
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.05120856187964773,
+          "recallAt10": 0.005050505050505051,
+          "assignmentAccuracy": 0.36902654867256635
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-034",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "highly similar",
+      "activity": 355,
+      "catalog_density": 0.022,
+      "ari": 0.058092557991631856,
+      "nmi": 0.17096263528001177,
+      "heldout_assignment_accuracy": 0.6338028169014085,
+      "abstention_precision": 0.6991150442477876,
+      "abstention_coverage": 0.6366197183098592,
+      "ndcg_blended": 0.042571558820810505,
+      "recall_blended": 0.008928571428571428,
+      "ndcg_split": 0.08815005330171458,
+      "recall_split": 0.017857142857142856,
+      "ndcg_oracle": 0.042571558820810505,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.08815005330171458,
+          "recallAt10": 0.017857142857142856,
+          "assignmentAccuracy": 0.6338028169014085
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.08973855254290869,
+          "recallAt10": 0.017857142857142856,
+          "assignmentAccuracy": 0.6366197183098592
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.10414683290516592,
+          "recallAt10": 0.017857142857142856,
+          "assignmentAccuracy": 0.6366197183098592
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.08210979315316402,
+          "recallAt10": 0.017857142857142856,
+          "assignmentAccuracy": 0.647887323943662
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-035",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 483,
+      "catalog_density": 0.027466666666666667,
+      "ari": 0.03809290463004459,
+      "nmi": 0.07332094343943293,
+      "heldout_assignment_accuracy": 0.5031055900621118,
+      "abstention_precision": 0.5227272727272727,
+      "abstention_coverage": 0.2732919254658385,
+      "ndcg_blended": 0.06364028872631156,
+      "recall_blended": 0.05555555555555555,
+      "ndcg_split": 0.03159612145651693,
+      "recall_split": 0.014492753623188406,
+      "ndcg_oracle": 0.03159612145651693,
+      "negative_transfer": -0.03204416726979462,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.03159612145651693,
+          "recallAt10": 0.014492753623188406,
+          "assignmentAccuracy": 0.5031055900621118
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.03159612145651693,
+          "recallAt10": 0.014492753623188406,
+          "assignmentAccuracy": 0.5031055900621118
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.03159612145651693,
+          "recallAt10": 0.014492753623188406,
+          "assignmentAccuracy": 0.5010351966873706
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.03159612145651693,
+          "recallAt10": 0.014492753623188406,
+          "assignmentAccuracy": 0.5134575569358178
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-036",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 1068,
+      "catalog_density": 0.0534,
+      "ari": 0.0819812743228719,
+      "nmi": 0.17322843159581797,
+      "heldout_assignment_accuracy": 0.450374531835206,
+      "abstention_precision": 0.6340579710144928,
+      "abstention_coverage": 0.25842696629213485,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.09909796822537734,
+      "recall_split": 0.009540604087538433,
+      "ndcg_oracle": 0.16943193771951134,
+      "negative_transfer": 0.16943193771951134,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.09909796822537734,
+          "recallAt10": 0.009540604087538433,
+          "assignmentAccuracy": 0.450374531835206
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.09909796822537734,
+          "recallAt10": 0.009540604087538433,
+          "assignmentAccuracy": 0.45318352059925093
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.09909796822537734,
+          "recallAt10": 0.009540604087538433,
+          "assignmentAccuracy": 0.4541198501872659
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.09287227684852256,
+          "recallAt10": 0.009540604087538433,
+          "assignmentAccuracy": 0.45692883895131087
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-037",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "clearly different",
+      "activity": 229,
+      "catalog_density": 0.015,
+      "ari": 0.051686879656266754,
+      "nmi": 0.17186245242223752,
+      "heldout_assignment_accuracy": 0.6157205240174672,
+      "abstention_precision": 0.9051094890510949,
+      "abstention_coverage": 0.5982532751091703,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.04505000432618385,
+      "negative_transfer": 0.04505000432618385,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6157205240174672
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.03807167035869176,
+          "recallAt10": 0.0625,
+          "assignmentAccuracy": 0.6419213973799127
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.03807167035869176,
+          "recallAt10": 0.0625,
+          "assignmentAccuracy": 0.6419213973799127
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.03807167035869176,
+          "recallAt10": 0.0625,
+          "assignmentAccuracy": 0.6462882096069869
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-038",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 925,
+      "catalog_density": 0.0534,
+      "ari": 0.03253591776686174,
+      "nmi": 0.12819204345436638,
+      "heldout_assignment_accuracy": 0.5178378378378379,
+      "abstention_precision": 0.5947368421052631,
+      "abstention_coverage": 0.41081081081081083,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.07074212199097153,
+      "recall_split": 0.020282186948853614,
+      "ndcg_oracle": 0.18205043583654912,
+      "negative_transfer": 0.18205043583654912,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.07074212199097153,
+          "recallAt10": 0.020282186948853614,
+          "assignmentAccuracy": 0.5178378378378379
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.07074212199097153,
+          "recallAt10": 0.020282186948853614,
+          "assignmentAccuracy": 0.5178378378378379
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.07074212199097153,
+          "recallAt10": 0.020282186948853614,
+          "assignmentAccuracy": 0.518918918918919
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.09650766274495248,
+          "recallAt10": 0.020282186948853614,
+          "assignmentAccuracy": 0.5243243243243243
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-039",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 1029,
+      "catalog_density": 0.05773333333333333,
+      "ari": -0.03925389594642161,
+      "nmi": 0.11500269998845529,
+      "heldout_assignment_accuracy": 0.3595724003887269,
+      "abstention_precision": 0.1853932584269663,
+      "abstention_coverage": 0.3459669582118562,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.08545473945422567,
+      "negative_transfer": 0.08545473945422567,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.3595724003887269
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.36151603498542273
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.36151603498542273
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.36345966958211856
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-040",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "partially overlapping",
+      "activity": 260,
+      "catalog_density": 0.0166,
+      "ari": 0.23255273819349362,
+      "nmi": 0.2773135110622676,
+      "heldout_assignment_accuracy": 0.7423076923076923,
+      "abstention_precision": 0.8497652582159625,
+      "abstention_coverage": 0.8192307692307692,
+      "ndcg_blended": 0.10124161603625315,
+      "recall_blended": 0.023255813953488372,
+      "ndcg_split": 0.042571558820810505,
+      "recall_split": 0.011627906976744186,
+      "ndcg_oracle": 0.1535073651712327,
+      "negative_transfer": 0.052265749134979556,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.042571558820810505,
+          "recallAt10": 0.011627906976744186,
+          "assignmentAccuracy": 0.7423076923076923
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.1139201872526399,
+          "recallAt10": 0.052667578659370724,
+          "assignmentAccuracy": 0.7538461538461538
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.14354139324358817,
+          "recallAt10": 0.08207934336525308,
+          "assignmentAccuracy": 0.7730769230769231
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.14836401660755308,
+          "recallAt10": 0.08207934336525308,
+          "assignmentAccuracy": 0.7846153846153846
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-041",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 657,
+      "catalog_density": 0.03726666666666666,
+      "ari": -0.022760193670931378,
+      "nmi": 0.06489470425097267,
+      "heldout_assignment_accuracy": 0.4018264840182648,
+      "abstention_precision": 0.5336322869955157,
+      "abstention_coverage": 0.3394216133942161,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.02838103921387367,
+      "recall_split": 0.00980392156862745,
+      "ndcg_oracle": 0.08610991699661573,
+      "negative_transfer": 0.08610991699661573,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.02838103921387367,
+          "recallAt10": 0.00980392156862745,
+          "assignmentAccuracy": 0.4018264840182648
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.024454640699786687,
+          "recallAt10": 0.00980392156862745,
+          "assignmentAccuracy": 0.4033485540334855
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.026132756326225113,
+          "recallAt10": 0.00980392156862745,
+          "assignmentAccuracy": 0.4048706240487062
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.04628748129118485,
+          "recallAt10": 0.00980392156862745,
+          "assignmentAccuracy": 0.4094368340943683
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-042",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 380,
+      "catalog_density": 0.0226,
+      "ari": 0.07154621894474547,
+      "nmi": 0.175974528885479,
+      "heldout_assignment_accuracy": 0.45,
+      "abstention_precision": 0.74,
+      "abstention_coverage": 0.2631578947368421,
+      "ndcg_blended": 0.036163123108266096,
+      "recall_blended": 0.04583333333333334,
+      "ndcg_split": 0.05502294157452005,
+      "recall_split": 0.017857142857142856,
+      "ndcg_oracle": 0.04879725019766527,
+      "negative_transfer": 0.012634127089399178,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.05502294157452005,
+          "recallAt10": 0.017857142857142856,
+          "assignmentAccuracy": 0.45
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.07092813862425798,
+          "recallAt10": 0.04285714285714286,
+          "assignmentAccuracy": 0.45789473684210524
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.07092813862425798,
+          "recallAt10": 0.04285714285714286,
+          "assignmentAccuracy": 0.4631578947368421
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.04585245131210004,
+          "recallAt10": 0.04285714285714286,
+          "assignmentAccuracy": 0.48157894736842105
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-043",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "highly similar",
+      "activity": 211,
+      "catalog_density": 0.013,
+      "ari": 0.12646720338612133,
+      "nmi": 0.2298364338983605,
+      "heldout_assignment_accuracy": 0.6824644549763034,
+      "abstention_precision": 0.7605633802816901,
+      "abstention_coverage": 0.6729857819905213,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.1061131829864573,
+      "recall_split": 0.04941176470588235,
+      "ndcg_oracle": 0.03668196104968003,
+      "negative_transfer": 0.03668196104968003,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.1061131829864573,
+          "recallAt10": 0.04941176470588235,
+          "assignmentAccuracy": 0.6824644549763034
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.14672784419872012,
+          "recallAt10": 0.04941176470588235,
+          "assignmentAccuracy": 0.6872037914691943
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.06943122193677728,
+          "recallAt10": 0.029411764705882353,
+          "assignmentAccuracy": 0.6966824644549763
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0665260050678645,
+          "recallAt10": 0.04941176470588235,
+          "assignmentAccuracy": 0.7109004739336493
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-044",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 804,
+      "catalog_density": 0.046,
+      "ari": 0.05821560825460569,
+      "nmi": 0.049276883671365845,
+      "heldout_assignment_accuracy": 0.43034825870646765,
+      "abstention_precision": 0.39106145251396646,
+      "abstention_coverage": 0.22263681592039802,
+      "ndcg_blended": 0.023143740645592426,
+      "recall_blended": 0.013888888888888888,
+      "ndcg_split": 0.1335568393668767,
+      "recall_split": 0.05241935483870968,
+      "ndcg_oracle": 0.07179432642566237,
+      "negative_transfer": 0.04865058578006995,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.1335568393668767,
+          "recallAt10": 0.05241935483870968,
+          "assignmentAccuracy": 0.43034825870646765
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.13580512225452526,
+          "recallAt10": 0.05241935483870968,
+          "assignmentAccuracy": 0.43159203980099503
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.13580512225452526,
+          "recallAt10": 0.05241935483870968,
+          "assignmentAccuracy": 0.43159203980099503
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.13523495499331512,
+          "recallAt10": 0.05241935483870968,
+          "assignmentAccuracy": 0.43532338308457713
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-045",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 815,
+      "catalog_density": 0.0402,
+      "ari": 0.014579348580245578,
+      "nmi": 0.0733051680979233,
+      "heldout_assignment_accuracy": 0.3950920245398773,
+      "abstention_precision": 0.3230769230769231,
+      "abstention_coverage": 0.2392638036809816,
+      "ndcg_blended": 0.01656355586359726,
+      "recall_blended": 0.008620689655172414,
+      "ndcg_split": 0.05939587710142204,
+      "recall_split": 0.03435672514619883,
+      "ndcg_oracle": 0.1541209097998974,
+      "negative_transfer": 0.13755735393630014,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.05939587710142204,
+          "recallAt10": 0.03435672514619883,
+          "assignmentAccuracy": 0.3950920245398773
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.056984565419439595,
+          "recallAt10": 0.03435672514619883,
+          "assignmentAccuracy": 0.3987730061349693
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.05939587710142204,
+          "recallAt10": 0.03435672514619883,
+          "assignmentAccuracy": 0.3987730061349693
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.05529835325370318,
+          "recallAt10": 0.03435672514619883,
+          "assignmentAccuracy": 0.4085889570552147
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-046",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "clearly different",
+      "activity": 229,
+      "catalog_density": 0.014866666666666667,
+      "ari": -0.026861659228990805,
+      "nmi": 0.004731628795927892,
+      "heldout_assignment_accuracy": 0.6069868995633187,
+      "abstention_precision": 0.5793103448275863,
+      "abstention_coverage": 0.6331877729257642,
+      "ndcg_blended": 0.03668196104968003,
+      "recall_blended": 0.038461538461538464,
+      "ndcg_split": 0.09170490262420007,
+      "recall_split": 0.07692307692307693,
+      "ndcg_oracle": 0.08659331667411307,
+      "negative_transfer": 0.049911355624433044,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.09170490262420007,
+          "recallAt10": 0.07692307692307693,
+          "assignmentAccuracy": 0.6069868995633187
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.09170490262420007,
+          "recallAt10": 0.07692307692307693,
+          "assignmentAccuracy": 0.6069868995633187
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.12734918779105225,
+          "recallAt10": 0.11538461538461539,
+          "assignmentAccuracy": 0.6157205240174672
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.13427646144501057,
+          "recallAt10": 0.11538461538461539,
+          "assignmentAccuracy": 0.6244541484716157
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-047",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 273,
+      "catalog_density": 0.017333333333333333,
+      "ari": 0.0888842307260107,
+      "nmi": 0.18795374573740053,
+      "heldout_assignment_accuracy": 0.5238095238095238,
+      "abstention_precision": 0.7821782178217822,
+      "abstention_coverage": 0.36996336996337,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.02838103921387367,
+      "recall_split": 0.013888888888888888,
+      "ndcg_oracle": 0.06774631125090028,
+      "negative_transfer": 0.06774631125090028,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.02838103921387367,
+          "recallAt10": 0.013888888888888888,
+          "assignmentAccuracy": 0.5238095238095238
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.02838103921387367,
+          "recallAt10": 0.013888888888888888,
+          "assignmentAccuracy": 0.5347985347985348
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.02838103921387367,
+          "recallAt10": 0.013888888888888888,
+          "assignmentAccuracy": 0.5421245421245421
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.03159612145651693,
+          "recallAt10": 0.013888888888888888,
+          "assignmentAccuracy": 0.5457875457875457
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-048",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 329,
+      "catalog_density": 0.019666666666666666,
+      "ari": 0.16452857198134851,
+      "nmi": 0.2605374098420289,
+      "heldout_assignment_accuracy": 0.541033434650456,
+      "abstention_precision": 0.8488372093023255,
+      "abstention_coverage": 0.2613981762917933,
+      "ndcg_blended": 0.023697091092387698,
+      "recall_blended": 0.011363636363636364,
+      "ndcg_split": 0.01735780548419432,
+      "recall_split": 0.017857142857142856,
+      "ndcg_oracle": 0.10921051727375058,
+      "negative_transfer": 0.08551342618136289,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.01735780548419432,
+          "recallAt10": 0.017857142857142856,
+          "assignmentAccuracy": 0.541033434650456
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.03326300253393225,
+          "recallAt10": 0.02922077922077922,
+          "assignmentAccuracy": 0.5501519756838906
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.03471561096838864,
+          "recallAt10": 0.02922077922077922,
+          "assignmentAccuracy": 0.5562310030395137
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.03471561096838864,
+          "recallAt10": 0.02922077922077922,
+          "assignmentAccuracy": 0.5714285714285714
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-049",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "partially overlapping",
+      "activity": 313,
+      "catalog_density": 0.020066666666666667,
+      "ari": 0.017248548763419608,
+      "nmi": 0.1923117793401919,
+      "heldout_assignment_accuracy": 0.6006389776357828,
+      "abstention_precision": 0.6912442396313364,
+      "abstention_coverage": 0.6932907348242812,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6006389776357828
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.610223642172524
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6134185303514377
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6261980830670927
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-050",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 1278,
+      "catalog_density": 0.06846666666666666,
+      "ari": 0.04827883252766675,
+      "nmi": 0.15964394699659745,
+      "heldout_assignment_accuracy": 0.5704225352112676,
+      "abstention_precision": 0.6138328530259366,
+      "abstention_coverage": 0.2715179968701095,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5704225352112676
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5727699530516432
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5743348982785602
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5774647887323944
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-051",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 679,
+      "catalog_density": 0.03833333333333333,
+      "ari": 0.05155336648591652,
+      "nmi": 0.19033521949548687,
+      "heldout_assignment_accuracy": 0.4536082474226804,
+      "abstention_precision": 0.5625,
+      "abstention_coverage": 0.21207658321060383,
+      "ndcg_blended": 0.018340980524840015,
+      "recall_blended": 0.009615384615384616,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.03326300253393225,
+      "negative_transfer": 0.014922022009092237,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4536082474226804
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4580265095729013
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.45949926362297494
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.47128129602356406
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-052",
+      "size": 2,
+      "inferred_lane_count": 3,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 277,
+      "catalog_density": 0.017,
+      "ari": -0.004497664036114085,
+      "nmi": 0.0003181653892068162,
+      "heldout_assignment_accuracy": 0.5487364620938628,
+      "abstention_precision": 0.5397727272727273,
+      "abstention_coverage": 0.6353790613718412,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5487364620938628
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5523465703971119
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5595667870036101
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5631768953068592
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-053",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 819,
+      "catalog_density": 0.048933333333333336,
+      "ari": -0.012071364371525763,
+      "nmi": 0.02774057010618428,
+      "heldout_assignment_accuracy": 0.40415140415140416,
+      "abstention_precision": 0.4840764331210191,
+      "abstention_coverage": 0.3833943833943834,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.09949667842558518,
+      "recall_split": 0.031512605042016806,
+      "ndcg_oracle": 0.10401635907392688,
+      "negative_transfer": 0.10401635907392688,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.09949667842558518,
+          "recallAt10": 0.031512605042016806,
+          "assignmentAccuracy": 0.40415140415140416
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.09949667842558518,
+          "recallAt10": 0.031512605042016806,
+          "assignmentAccuracy": 0.4065934065934066
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.09949667842558518,
+          "recallAt10": 0.031512605042016806,
+          "assignmentAccuracy": 0.4078144078144078
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.10174496131323374,
+          "recallAt10": 0.031512605042016806,
+          "assignmentAccuracy": 0.41147741147741146
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-054",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 677,
+      "catalog_density": 0.038066666666666665,
+      "ari": 0.024546310097873877,
+      "nmi": 0.06131734796674945,
+      "heldout_assignment_accuracy": 0.4726735598227474,
+      "abstention_precision": 0.3137254901960784,
+      "abstention_coverage": 0.2259970457902511,
+      "ndcg_blended": 0.05998022370059522,
+      "recall_blended": 0.020192307692307693,
+      "ndcg_split": 0.021285779410405253,
+      "recall_split": 0.0125,
+      "ndcg_oracle": 0.12758788781691122,
+      "negative_transfer": 0.067607664116316,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.021285779410405253,
+          "recallAt10": 0.0125,
+          "assignmentAccuracy": 0.4726735598227474
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.023697091092387698,
+          "recallAt10": 0.0125,
+          "assignmentAccuracy": 0.4771048744460857
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.023697091092387698,
+          "recallAt10": 0.0125,
+          "assignmentAccuracy": 0.48005908419497784
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.023697091092387698,
+          "recallAt10": 0.0125,
+          "assignmentAccuracy": 0.48892171344165436
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-055",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "clearly different",
+      "activity": 157,
+      "catalog_density": 0.010066666666666666,
+      "ari": 0.13392583512105424,
+      "nmi": 0.2819195385531515,
+      "heldout_assignment_accuracy": 0.6878980891719745,
+      "abstention_precision": 0.7916666666666666,
+      "abstention_coverage": 0.6114649681528662,
+      "ndcg_blended": 0.04773021654473367,
+      "recall_blended": 0.08333333333333333,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": -0.04773021654473367,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6878980891719745
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6878980891719745
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6878980891719745
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6942675159235668
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-056",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 468,
+      "catalog_density": 0.0308,
+      "ari": 0.13156717315593894,
+      "nmi": 0.3396845552921237,
+      "heldout_assignment_accuracy": 0.5427350427350427,
+      "abstention_precision": 0.47619047619047616,
+      "abstention_coverage": 0.358974358974359,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0765985366915618,
+      "recall_split": 0.029307568438003223,
+      "ndcg_oracle": 0.024454640699786687,
+      "negative_transfer": 0.024454640699786687,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0765985366915618,
+          "recallAt10": 0.029307568438003223,
+          "assignmentAccuracy": 0.5427350427350427
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0765985366915618,
+          "recallAt10": 0.029307568438003223,
+          "assignmentAccuracy": 0.5470085470085471
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.07765753618569121,
+          "recallAt10": 0.029307568438003223,
+          "assignmentAccuracy": 0.5512820512820513
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.07729032061344704,
+          "recallAt10": 0.029307568438003223,
+          "assignmentAccuracy": 0.5598290598290598
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-057",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 824,
+      "catalog_density": 0.0506,
+      "ari": 0.05435171366159253,
+      "nmi": 0.279097497056766,
+      "heldout_assignment_accuracy": 0.42839805825242716,
+      "abstention_precision": 0.7410358565737052,
+      "abstention_coverage": 0.30461165048543687,
+      "ndcg_blended": 0.015905197049737932,
+      "recall_blended": 0.0033333333333333335,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": -0.015905197049737932,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.42839805825242716
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4308252427184466
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4320388349514563
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4356796116504854
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-058",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "partially overlapping",
+      "activity": 348,
+      "catalog_density": 0.022333333333333334,
+      "ari": 0.1358229222762331,
+      "nmi": 0.24891874559484364,
+      "heldout_assignment_accuracy": 0.6896551724137931,
+      "abstention_precision": 0.8237704918032787,
+      "abstention_coverage": 0.7011494252873564,
+      "ndcg_blended": 0.17985495592591466,
+      "recall_blended": 0.03571428571428571,
+      "ndcg_split": 0.14381317485706366,
+      "recall_split": 0.03571428571428571,
+      "ndcg_oracle": 0.21246300690833556,
+      "negative_transfer": 0.032608050982420894,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.14381317485706366,
+          "recallAt10": 0.03571428571428571,
+          "assignmentAccuracy": 0.6896551724137931
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.1359572270046418,
+          "recallAt10": 0.03571428571428571,
+          "assignmentAccuracy": 0.7011494252873564
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.1359572270046418,
+          "recallAt10": 0.03571428571428571,
+          "assignmentAccuracy": 0.7040229885057471
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.18929940301953063,
+          "recallAt10": 0.03571428571428571,
+          "assignmentAccuracy": 0.7327586206896551
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-059",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 972,
+      "catalog_density": 0.0532,
+      "ari": -0.03370197979900746,
+      "nmi": 0.07415591899785776,
+      "heldout_assignment_accuracy": 0.4053497942386831,
+      "abstention_precision": 0.29430379746835444,
+      "abstention_coverage": 0.32510288065843623,
+      "ndcg_blended": 0.026132756326225113,
+      "recall_blended": 0.008771929824561403,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.02838103921387367,
+      "negative_transfer": 0.002248282887648556,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4053497942386831
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4074074074074074
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.40843621399176955
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4012345679012346
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-060",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 1142,
+      "catalog_density": 0.06526666666666667,
+      "ari": -0.06590796083180374,
+      "nmi": 0.09522620899657828,
+      "heldout_assignment_accuracy": 0.3126094570928196,
+      "abstention_precision": 0.34296028880866425,
+      "abstention_coverage": 0.2425569176882662,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.062227081755648665,
+      "recall_split": 0.03125,
+      "ndcg_oracle": 0.0512791668319859,
+      "negative_transfer": 0.0512791668319859,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.062227081755648665,
+          "recallAt10": 0.03125,
+          "assignmentAccuracy": 0.3126094570928196
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.062227081755648665,
+          "recallAt10": 0.03125,
+          "assignmentAccuracy": 0.31436077057793343
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.062227081755648665,
+          "recallAt10": 0.03125,
+          "assignmentAccuracy": 0.3161120840630473
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.062227081755648665,
+          "recallAt10": 0.03125,
+          "assignmentAccuracy": 0.3222416812609457
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-061",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "highly similar",
+      "activity": 174,
+      "catalog_density": 0.0114,
+      "ari": 0.22842332457751124,
+      "nmi": 0.31362527151265107,
+      "heldout_assignment_accuracy": 0.7413793103448276,
+      "abstention_precision": 0.6881720430107527,
+      "abstention_coverage": 0.5344827586206896,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.03972853971638371,
+      "recall_split": 0.07142857142857142,
+      "ndcg_oracle": 0.04137301065266001,
+      "negative_transfer": 0.04137301065266001,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.03972853971638371,
+          "recallAt10": 0.07142857142857142,
+          "assignmentAccuracy": 0.7413793103448276
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.04581272215238181,
+          "recallAt10": 0.07142857142857142,
+          "assignmentAccuracy": 0.7586206896551724
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.04581272215238181,
+          "recallAt10": 0.07142857142857142,
+          "assignmentAccuracy": 0.7586206896551724
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.04581272215238181,
+          "recallAt10": 0.07142857142857142,
+          "assignmentAccuracy": 0.7873563218390804
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-062",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 373,
+      "catalog_density": 0.0202,
+      "ari": 0.012203655560938699,
+      "nmi": 0.06024542493710315,
+      "heldout_assignment_accuracy": 0.4316353887399464,
+      "abstention_precision": 0.564935064935065,
+      "abstention_coverage": 0.4128686327077748,
+      "ndcg_blended": 0.09162544430476362,
+      "recall_blended": 0.047619047619047616,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": -0.09162544430476362,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4316353887399464
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4316353887399464
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4343163538873995
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.4584450402144772
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-063",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 583,
+      "catalog_density": 0.03373333333333333,
+      "ari": 0.03616542171769002,
+      "nmi": 0.09938925707800543,
+      "heldout_assignment_accuracy": 0.4065180102915952,
+      "abstention_precision": 0.5683453237410072,
+      "abstention_coverage": 0.23842195540308747,
+      "ndcg_blended": 0.03569878600903434,
+      "recall_blended": 0.025,
+      "ndcg_split": 0.021285779410405253,
+      "recall_split": 0.011363636363636364,
+      "ndcg_oracle": 0.1644746555934362,
+      "negative_transfer": 0.12877586958440185,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.021285779410405253,
+          "recallAt10": 0.011363636363636364,
+          "assignmentAccuracy": 0.4065180102915952
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.023697091092387698,
+          "recallAt10": 0.011363636363636364,
+          "assignmentAccuracy": 0.411663807890223
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.023697091092387698,
+          "recallAt10": 0.011363636363636364,
+          "assignmentAccuracy": 0.41680960548885077
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.027511470787260024,
+          "recallAt10": 0.011363636363636364,
+          "assignmentAccuracy": 0.4288164665523156
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-064",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "clearly different",
+      "activity": 280,
+      "catalog_density": 0.01806666666666667,
+      "ari": -0.00019392219797694654,
+      "nmi": 0.19100187508608632,
+      "heldout_assignment_accuracy": 0.5785714285714286,
+      "abstention_precision": 0.6851851851851852,
+      "abstention_coverage": 0.5785714285714286,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5785714285714286
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5857142857142857
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5892857142857143
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.6
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-065",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 321,
+      "catalog_density": 0.019466666666666667,
+      "ari": 0.161586582498538,
+      "nmi": 0.11841556842038406,
+      "heldout_assignment_accuracy": 0.5389408099688473,
+      "abstention_precision": 0.5192307692307693,
+      "abstention_coverage": 0.32398753894080995,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.0,
+      "recall_split": 0.0,
+      "ndcg_oracle": 0.0,
+      "negative_transfer": 0.0,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5389408099688473
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5482866043613707
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5545171339563862
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.0,
+          "recallAt10": 0.0,
+          "assignmentAccuracy": 0.5700934579439252
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-066",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "clearly different",
+      "activity": 539,
+      "catalog_density": 0.031066666666666666,
+      "ari": -0.011379755397802359,
+      "nmi": 0.1252399029400447,
+      "heldout_assignment_accuracy": 0.38404452690166974,
+      "abstention_precision": 0.29545454545454547,
+      "abstention_coverage": 0.24489795918367346,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.02447823133749195,
+      "recall_split": 0.03571428571428571,
+      "ndcg_oracle": 0.06907515258267499,
+      "negative_transfer": 0.06907515258267499,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.02447823133749195,
+          "recallAt10": 0.03571428571428571,
+          "assignmentAccuracy": 0.38404452690166974
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.02447823133749195,
+          "recallAt10": 0.03571428571428571,
+          "assignmentAccuracy": 0.3877551020408163
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.02447823133749195,
+          "recallAt10": 0.03571428571428571,
+          "assignmentAccuracy": 0.3914656771799629
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.022906361076190904,
+          "recallAt10": 0.03571428571428571,
+          "assignmentAccuracy": 0.3970315398886827
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-067",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "partially overlapping",
+      "activity": 246,
+      "catalog_density": 0.015866666666666668,
+      "ari": 0.3145799155724018,
+      "nmi": 0.20902227643065213,
+      "heldout_assignment_accuracy": 0.8008130081300813,
+      "abstention_precision": 0.8950617283950617,
+      "abstention_coverage": 0.6585365853658537,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.12893768703224637,
+      "recall_split": 0.125,
+      "ndcg_oracle": 0.03919913448933767,
+      "negative_transfer": 0.03919913448933767,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.12893768703224637,
+          "recallAt10": 0.125,
+          "assignmentAccuracy": 0.8008130081300813
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.12893768703224637,
+          "recallAt10": 0.125,
+          "assignmentAccuracy": 0.8008130081300813
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.12893768703224637,
+          "recallAt10": 0.125,
+          "assignmentAccuracy": 0.8008130081300813
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.12893768703224637,
+          "recallAt10": 0.125,
+          "assignmentAccuracy": 0.8008130081300813
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-068",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 340,
+      "catalog_density": 0.02033333333333333,
+      "ari": 0.09808487325381125,
+      "nmi": 0.23427433372350706,
+      "heldout_assignment_accuracy": 0.5558823529411765,
+      "abstention_precision": 0.648,
+      "abstention_coverage": 0.36764705882352944,
+      "ndcg_blended": 0.18471440365409864,
+      "recall_blended": 0.041666666666666664,
+      "ndcg_split": 0.16193787858075034,
+      "recall_split": 0.052083333333333336,
+      "ndcg_oracle": 0.1743912654926543,
+      "negative_transfer": -0.01032313816144434,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.16193787858075034,
+          "recallAt10": 0.052083333333333336,
+          "assignmentAccuracy": 0.5558823529411765
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.16193787858075034,
+          "recallAt10": 0.052083333333333336,
+          "assignmentAccuracy": 0.5588235294117647
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.16193787858075034,
+          "recallAt10": 0.052083333333333336,
+          "assignmentAccuracy": 0.5588235294117647
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.16193787858075034,
+          "recallAt10": 0.052083333333333336,
+          "assignmentAccuracy": 0.5588235294117647
+        }
+      ],
+      "activity_cohort": "lower",
+      "sparsity_cohort": "sparse"
+    },
+    {
+      "household_id": "synthetic-069",
+      "size": 4,
+      "inferred_lane_count": 3,
+      "lane_count_match": false,
+      "overlap_stratum": "partially overlapping",
+      "activity": 730,
+      "catalog_density": 0.03646666666666667,
+      "ari": 0.018679625533962668,
+      "nmi": 0.05442230612139893,
+      "heldout_assignment_accuracy": 0.33424657534246577,
+      "abstention_precision": 0.39901477832512317,
+      "abstention_coverage": 0.27808219178082194,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.019599567244668836,
+      "recall_split": 0.016666666666666666,
+      "ndcg_oracle": 0.065088022028928,
+      "negative_transfer": 0.065088022028928,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.019599567244668836,
+          "recallAt10": 0.016666666666666666,
+          "assignmentAccuracy": 0.33424657534246577
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.019599567244668836,
+          "recallAt10": 0.016666666666666666,
+          "assignmentAccuracy": 0.336986301369863
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.019599567244668836,
+          "recallAt10": 0.016666666666666666,
+          "assignmentAccuracy": 0.33835616438356164
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.019599567244668836,
+          "recallAt10": 0.016666666666666666,
+          "assignmentAccuracy": 0.3561643835616438
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-070",
+      "size": 2,
+      "inferred_lane_count": 2,
+      "lane_count_match": true,
+      "overlap_stratum": "highly similar",
+      "activity": 624,
+      "catalog_density": 0.0364,
+      "ari": 0.022386307379705084,
+      "nmi": 0.040161889366528446,
+      "heldout_assignment_accuracy": 0.5785256410256411,
+      "abstention_precision": 0.6453089244851259,
+      "abstention_coverage": 0.7003205128205128,
+      "ndcg_blended": 0.07569867054800503,
+      "recall_blended": 0.01639344262295082,
+      "ndcg_split": 0.042571558820810505,
+      "recall_split": 0.00819672131147541,
+      "ndcg_oracle": 0.11523690488035855,
+      "negative_transfer": 0.039538234332353525,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.042571558820810505,
+          "recallAt10": 0.00819672131147541,
+          "assignmentAccuracy": 0.5785256410256411
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.042571558820810505,
+          "recallAt10": 0.00819672131147541,
+          "assignmentAccuracy": 0.5833333333333334
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.042571558820810505,
+          "recallAt10": 0.00819672131147541,
+          "assignmentAccuracy": 0.5833333333333334
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.042571558820810505,
+          "recallAt10": 0.00819672131147541,
+          "assignmentAccuracy": 0.5865384615384616
+        }
+      ],
+      "activity_cohort": "middle",
+      "sparsity_cohort": "medium"
+    },
+    {
+      "household_id": "synthetic-071",
+      "size": 3,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 1054,
+      "catalog_density": 0.05606666666666667,
+      "ari": 0.037266300882390434,
+      "nmi": 0.1048408771141719,
+      "heldout_assignment_accuracy": 0.49430740037950666,
+      "abstention_precision": 0.5481283422459893,
+      "abstention_coverage": 0.3548387096774194,
+      "ndcg_blended": 0.0,
+      "recall_blended": 0.0,
+      "ndcg_split": 0.023143740645592426,
+      "recall_split": 0.012820512820512822,
+      "ndcg_oracle": 0.05772887778274205,
+      "negative_transfer": 0.05772887778274205,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.023143740645592426,
+          "recallAt10": 0.012820512820512822,
+          "assignmentAccuracy": 0.49430740037950666
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.023143740645592426,
+          "recallAt10": 0.012820512820512822,
+          "assignmentAccuracy": 0.4952561669829222
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.023143740645592426,
+          "recallAt10": 0.012820512820512822,
+          "assignmentAccuracy": 0.4971537001897533
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.026132756326225113,
+          "recallAt10": 0.012820512820512822,
+          "assignmentAccuracy": 0.5009487666034156
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    },
+    {
+      "household_id": "synthetic-072",
+      "size": 4,
+      "inferred_lane_count": 2,
+      "lane_count_match": false,
+      "overlap_stratum": "highly similar",
+      "activity": 1010,
+      "catalog_density": 0.051,
+      "ari": 0.025826935031749113,
+      "nmi": 0.08061038832434014,
+      "heldout_assignment_accuracy": 0.3594059405940594,
+      "abstention_precision": 0.37656903765690375,
+      "abstention_coverage": 0.23663366336633662,
+      "ndcg_blended": 0.01735780548419432,
+      "recall_blended": 0.010869565217391304,
+      "ndcg_split": 0.04585245131210004,
+      "recall_split": 0.023369565217391305,
+      "ndcg_oracle": 0.10760537343756617,
+      "negative_transfer": 0.09024756795337185,
+      "correction_curve": [
+        {
+          "confirmations": 0,
+          "ndcgAt10": 0.04585245131210004,
+          "recallAt10": 0.023369565217391305,
+          "assignmentAccuracy": 0.3594059405940594
+        },
+        {
+          "confirmations": 3,
+          "ndcgAt10": 0.044869276271454345,
+          "recallAt10": 0.023369565217391305,
+          "assignmentAccuracy": 0.36237623762376237
+        },
+        {
+          "confirmations": 5,
+          "ndcgAt10": 0.044869276271454345,
+          "recallAt10": 0.023369565217391305,
+          "assignmentAccuracy": 0.36435643564356435
+        },
+        {
+          "confirmations": 10,
+          "ndcgAt10": 0.043416667836997956,
+          "recallAt10": 0.023369565217391305,
+          "assignmentAccuracy": 0.3693069306930693
+        }
+      ],
+      "activity_cohort": "higher",
+      "sparsity_cohort": "dense"
+    }
+  ],
+  "demo_selection_rule": "Closest to median NDCG delta in the size-3, partially-overlapping cohort.",
+  "demo_household_id": "synthetic-032"
+}
