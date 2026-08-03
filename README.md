@@ -19,7 +19,7 @@ The product is the decision loop. The analysis underneath shows whether that loo
 
 ## The 30-second demo
 
-1. Start with the real-life moment: a friend watched on your TV without switching profiles.
+1. A three-second signal check notices that a new taste pattern may have come from someone watching without switching profiles. It is a product story, not a claim of identity detection, and can be skipped.
 2. See why the account remembers the titles but not the social context.
 3. Choose which of three anonymous taste patterns feels most like yours.
 4. Answer whether one high-information title was your choice, probably a guest's, or uncertain.

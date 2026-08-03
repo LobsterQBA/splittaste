@@ -7,6 +7,7 @@ import type { CohortResult, DemoBundle, LaneId, MovieVector, TasteLane } from "@
 
 type GuestAnswer = "mine" | "guest" | "unsure";
 type RepairPhase = "idle" | "question-one" | "question-two" | "applying" | "complete";
+type IntroStage = "scan" | "pattern" | "guest" | "leaving";
 
 const laneCopy: Record<LaneId, { name: string; description: string }> = {
   "lane-a": { name: "Pressure Cookers", description: "Tense choices, uneasy laughs, and consequences closing in." },
@@ -51,6 +52,61 @@ function ArrowIcon() {
 
 function PlayIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7 8 5-8 5V7Z" /></svg>;
+}
+
+function IntroSequence({ onDone }: { onDone: () => void }) {
+  const [stage, setStage] = useState<IntroStage>("scan");
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const timings = reducedMotion ? [80, 160, 240, 320] : [850, 1750, 2850, 3350];
+    const timers = [
+      window.setTimeout(() => setStage("pattern"), timings[0]),
+      window.setTimeout(() => setStage("guest"), timings[1]),
+      window.setTimeout(() => setStage("leaving"), timings[2]),
+      window.setTimeout(onDone, timings[3]),
+    ];
+    return () => {
+      timers.forEach(window.clearTimeout);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [onDone]);
+
+  const finish = () => {
+    setStage("leaving");
+    window.setTimeout(onDone, 180);
+  };
+
+  return (
+    <section className={`signal-intro stage-${stage}`} aria-live="polite" aria-label="Checking recommendation signals">
+      <button className="intro-skip" type="button" onClick={finish}>Skip intro</button>
+      <div className="intro-brand">SplitTaste<span>+</span></div>
+      <div className="signal-scene" aria-hidden="true">
+        <div className="signal-tv"><div className="signal-scan" /><span className="signal-pulse" /></div>
+        <div className="signal-cards"><i /><i /><i /></div>
+      </div>
+      <div className="intro-copy">
+        <p className="intro-status">
+          {stage === "scan" && "Checking recent viewing signals"}
+          {stage === "pattern" && "A new taste pattern appeared"}
+          {(stage === "guest" || stage === "leaving") && "Possible guest viewing"}
+        </p>
+        <h1>
+          {stage === "scan" && <>Reading what changed<br />on this profile…</>}
+          {stage === "pattern" && <>This account suddenly<br />feels a little different.</>}
+          {(stage === "guest" || stage === "leaving") && <>Someone may have watched<br />without switching profiles.</>}
+        </h1>
+        <p className="intro-detail">
+          {stage === "scan" && "Looking for recommendation signals that do not move together."}
+          {stage === "pattern" && "Nothing is wrong. One recent choice simply does not match the usual mix."}
+          {(stage === "guest" || stage === "leaving") && "Your home row may be mixed. A quick repair can put your taste back in the lead."}
+        </p>
+      </div>
+      <div className="intro-progress" aria-hidden="true"><i /><i /><i /></div>
+    </section>
+  );
 }
 
 function MovieCard({ movie, index, signal, compact = false }: { movie: MovieVector; index?: number; signal?: string; compact?: boolean }) {
@@ -341,6 +397,7 @@ function ResearchSection({ bundle }: { bundle: DemoBundle }) {
 }
 
 export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
+  const [showIntro, setShowIntro] = useState(true);
   const [phase, setPhase] = useState<RepairPhase>("idle");
   const [ownerLane, setOwnerLane] = useState<LaneId | null>(null);
   const [guestAnswer, setGuestAnswer] = useState<GuestAnswer | null>(null);
@@ -388,6 +445,8 @@ export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
 
   return (
     <main className="streaming-app">
+      {showIntro && <IntroSequence onDone={() => setShowIntro(false)} />}
+      <div className={`experience-shell ${showIntro ? "intro-obscured" : ""}`} aria-hidden={showIntro}>
       <nav className="stream-nav" aria-label="Primary">
         <a href="#home" className="brand">SplitTaste<span>+</span></a>
         <div className="nav-links"><a href="#home">Product demo</a><a href="#browse">Browse</a><a href="#evidence">Data & evaluation</a></div>
@@ -457,6 +516,7 @@ export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
       <footer><div className="brand">SplitTaste<span>+</span></div><p>Independent, noncommercial research demo. Not affiliated with Amazon or Prime Video.</p><a href="#home">Back to top ↑</a></footer>
 
       <RepairDialog bundle={bundle} phase={phase} ownerLane={ownerLane} candidate={candidate} onLane={selectLane} onAnswer={answerGuest} onClose={() => setPhase("idle")} />
+      </div>
     </main>
   );
 }

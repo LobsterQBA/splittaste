@@ -1,16 +1,34 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import demoBundle from "@/public/data/demo-bundle.json";
 import type { DemoBundle } from "@/types/demo";
 import { SplitTasteExperience } from "./SplitTasteExperience";
 
 describe("SplitTasteExperience", () => {
-  afterEach(() => vi.useRealTimers());
+  afterEach(() => {
+    cleanup();
+    vi.useRealTimers();
+  });
+
+  it("introduces the mixed-profile signal before revealing the experience", () => {
+    vi.useFakeTimers();
+    render(<SplitTasteExperience bundle={demoBundle as unknown as DemoBundle} />);
+
+    expect(screen.getByText(/Checking recent viewing signals/i)).toBeInTheDocument();
+    act(() => vi.advanceTimersByTime(900));
+    expect(screen.getByText(/A new taste pattern appeared/i)).toBeInTheDocument();
+    act(() => vi.advanceTimersByTime(900));
+    expect(screen.getByText(/Possible guest viewing/i)).toBeInTheDocument();
+    act(() => vi.advanceTimersByTime(1700));
+    expect(screen.queryByLabelText(/Checking recommendation signals/i)).not.toBeInTheDocument();
+  });
 
   it("turns two user answers into a repaired recommendation comparison", () => {
     vi.useFakeTimers();
     render(<SplitTasteExperience bundle={demoBundle as unknown as DemoBundle} />);
 
+    fireEvent.click(screen.getByRole("button", { name: /skip intro/i }));
+    act(() => vi.advanceTimersByTime(200));
     expect(screen.getByText(/A friend pressed play/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /repair my recommendations/i }));
     expect(screen.getByText(/Which row feels most like you/i)).toBeInTheDocument();
