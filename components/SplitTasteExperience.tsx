@@ -61,7 +61,7 @@ function IntroSequence({ onDone }: { onDone: () => void }) {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const timings = reducedMotion ? [80, 160, 240, 320] : [1350, 2850, 4550, 5400];
+    const timings = reducedMotion ? [80, 160, 240, 320] : [1800, 3900, 6200, 7200];
     const timers = [
       window.setTimeout(() => setStage("pattern"), timings[0]),
       window.setTimeout(() => setStage("guest"), timings[1]),
@@ -84,25 +84,25 @@ function IntroSequence({ onDone }: { onDone: () => void }) {
       <button className="intro-skip" type="button" onClick={finish}>Skip intro</button>
       <div className="intro-brand">SplitTaste<span>+</span></div>
       <div className="signal-scene" aria-hidden="true">
-        <div className="signal-tv"><div className="signal-scan" /><span className="signal-pulse" /></div>
-        <div className="signal-cards"><i /><i /><i /></div>
+        <div className="signal-orb"><span /><i /><i /><i /></div>
+        <div className="signal-particles"><i /><i /><i /><i /><i /><i /></div>
       </div>
       <div className="intro-copy">
         <div className="intro-copy-frame" key={stage}>
         <p className="intro-status">
-          {stage === "scan" && "Checking recent viewing signals"}
-          {stage === "pattern" && "A new taste pattern appeared"}
-          {(stage === "guest" || stage === "leaving") && "Possible guest viewing"}
+          {stage === "scan" && "Reading this profile"}
+          {stage === "pattern" && "Something shifted"}
+          {(stage === "guest" || stage === "leaving") && "Possible shared viewing"}
         </p>
         <h1>
-          {stage === "scan" && <>Reading what changed<br />on this profile…</>}
-          {stage === "pattern" && <>This account suddenly<br />feels a little different.</>}
-          {(stage === "guest" || stage === "leaving") && <>Someone may have watched<br />without switching profiles.</>}
+          {stage === "scan" && <>Calibrating your<br />taste signal…</>}
+          {stage === "pattern" && <>This profile has<br />a new pattern.</>}
+          {(stage === "guest" || stage === "leaving") && <>Someone else may have<br />watched on this profile.</>}
         </h1>
         <p className="intro-detail">
-          {stage === "scan" && "Looking for recommendation signals that do not move together."}
-          {stage === "pattern" && "Nothing is wrong. One recent choice simply does not match the usual mix."}
-          {(stage === "guest" || stage === "leaving") && "Your home row may be mixed. A quick repair can put your taste back in the lead."}
+          {stage === "scan" && "Comparing recent choices with the patterns that usually shape this home row."}
+          {stage === "pattern" && "A few recent choices are moving differently from the rest of your taste."}
+          {(stage === "guest" || stage === "leaving") && "This is only a signal—not an identity guess. A quick calibration can put your preferences back in the lead."}
         </p>
         </div>
       </div>
