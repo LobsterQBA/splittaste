@@ -15,11 +15,11 @@ describe("SplitTasteExperience", () => {
     render(<SplitTasteExperience bundle={demoBundle as unknown as DemoBundle} />);
 
     expect(screen.getByText(/Checking recent viewing signals/i)).toBeInTheDocument();
-    act(() => vi.advanceTimersByTime(900));
+    act(() => vi.advanceTimersByTime(1400));
     expect(screen.getByText(/A new taste pattern appeared/i)).toBeInTheDocument();
-    act(() => vi.advanceTimersByTime(900));
+    act(() => vi.advanceTimersByTime(1500));
     expect(screen.getByText(/Possible guest viewing/i)).toBeInTheDocument();
-    act(() => vi.advanceTimersByTime(1700));
+    act(() => vi.advanceTimersByTime(2600));
     expect(screen.queryByLabelText(/Checking recommendation signals/i)).not.toBeInTheDocument();
   });
 

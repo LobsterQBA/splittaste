@@ -61,7 +61,7 @@ function IntroSequence({ onDone }: { onDone: () => void }) {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const timings = reducedMotion ? [80, 160, 240, 320] : [850, 1750, 2850, 3350];
+    const timings = reducedMotion ? [80, 160, 240, 320] : [1350, 2850, 4550, 5400];
     const timers = [
       window.setTimeout(() => setStage("pattern"), timings[0]),
       window.setTimeout(() => setStage("guest"), timings[1]),
@@ -88,6 +88,7 @@ function IntroSequence({ onDone }: { onDone: () => void }) {
         <div className="signal-cards"><i /><i /><i /></div>
       </div>
       <div className="intro-copy">
+        <div className="intro-copy-frame" key={stage}>
         <p className="intro-status">
           {stage === "scan" && "Checking recent viewing signals"}
           {stage === "pattern" && "A new taste pattern appeared"}
@@ -103,6 +104,7 @@ function IntroSequence({ onDone }: { onDone: () => void }) {
           {stage === "pattern" && "Nothing is wrong. One recent choice simply does not match the usual mix."}
           {(stage === "guest" || stage === "leaving") && "Your home row may be mixed. A quick repair can put your taste back in the lead."}
         </p>
+        </div>
       </div>
       <div className="intro-progress" aria-hidden="true"><i /><i /><i /></div>
     </section>
@@ -270,7 +272,58 @@ function Evidence({ bundle }: { bundle: DemoBundle }) {
   );
 }
 
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion || typeof IntersectionObserver === "undefined") {
+      const timer = window.setTimeout(() => setVisible(true), 0);
+      return () => window.clearTimeout(timer);
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.18 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, visible };
+}
+
+function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+  return <div ref={ref} className={`essay-reveal ${visible ? "is-visible" : ""} ${className}`}>{children}</div>;
+}
+
+function RankingComparison({ bundle }: { bundle: DemoBundle }) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+  const rows = [
+    { label: "One blended profile", value: bundle.evaluation.ndcgBlended, tone: "blended" },
+    { label: "SplitTaste · 3 answers", value: bundle.evaluation.ndcgSplitTaste, tone: "split" },
+    { label: "Oracle upper bound", value: bundle.evaluation.ndcgOracle, tone: "oracle" },
+  ];
+  const max = Math.max(...rows.map((row) => row.value));
+  return (
+    <div ref={ref} className={`ranking-comparison ${visible ? "is-visible" : ""}`}>
+      <div className="chart-heading"><div><p>Held-out ranking quality</p><h3>Separating tastes recovered part of the signal.</h3></div><span>NDCG@10 · offline</span></div>
+      <div className="ranking-axis"><span>0</span><span>{max.toFixed(3)}</span></div>
+      <div className="ranking-rows">
+        {rows.map((row) => <div className="ranking-row" key={row.label}><strong>{row.label}</strong><div><i className={row.tone} style={{ "--bar-width": `${(row.value / max) * 100}%` } as React.CSSProperties} /></div><b>{row.value.toFixed(3)}</b></div>)}
+      </div>
+      <p className="chart-note">The oracle uses evaluator-only source mappings. It is a ceiling for comparison, never part of the public product.</p>
+    </div>
+  );
+}
+
 function CorrectionChart({ bundle }: { bundle: DemoBundle }) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
   const points = bundle.evaluation.correctionCurve;
   const values = points.map((point) => point.ndcgAt10);
   const min = Math.min(...values) - 0.002;
@@ -282,7 +335,7 @@ function CorrectionChart({ bundle }: { bundle: DemoBundle }) {
   }));
 
   return (
-    <div className="correction-chart">
+    <div ref={ref} className={`correction-chart ${visible ? "is-visible" : ""}`}>
       <div className="chart-heading"><div><p>Correction curve</p><h3>A few answers move the ranking.</h3></div><span>NDCG@10 · offline</span></div>
       <svg viewBox="0 0 510 190" role="img" aria-label="NDCG at 10 improves as confirmations increase from zero to ten">
         <title>Correction curve for zero, three, five, and ten confirmations</title>
@@ -301,27 +354,28 @@ function CorrectionChart({ bundle }: { bundle: DemoBundle }) {
 }
 
 function CohortExplorer({ rows }: { rows: CohortResult[] }) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
   const dimensions: CohortResult["dimension"][] = ["overlap", "household size", "activity", "sparsity"];
   const [dimension, setDimension] = useState<CohortResult["dimension"]>("overlap");
   const visibleRows = rows.filter((row) => row.dimension === dimension);
   const maxValue = Math.max(...visibleRows.flatMap((row) => [row.ndcgBlended, row.ndcgSplitTaste])) * 1.08;
 
   return (
-    <div className="cohort-explorer">
+    <div ref={ref} className={`cohort-explorer ${visible ? "is-visible" : ""}`}>
       <div className="chart-heading"><div><p>Cohort EDA</p><h3>The average hides where the idea struggles.</h3></div><span>72 households · 24 per displayed cohort</span></div>
       <div className="cohort-tabs" role="tablist" aria-label="Cohort dimension">
         {dimensions.map((item) => <button key={item} role="tab" aria-selected={dimension === item} className={dimension === item ? "active" : ""} onClick={() => setDimension(item)}>{item}</button>)}
       </div>
       <div className="bar-legend"><span><i className="blended" />Blended</span><span><i className="split" />SplitTaste</span></div>
-      <div className="cohort-bars">
+      <div className="cohort-bars" key={dimension}>
         {visibleRows.map((row) => {
           const delta = row.ndcgSplitTaste - row.ndcgBlended;
           return (
             <div className="cohort-row" key={`${row.dimension}-${row.cohort}`}>
               <div className="cohort-label"><strong>{row.cohort}</strong><span>{row.households} households</span></div>
               <div className="bar-pair">
-                <i className="bar blended" style={{ width: `${(row.ndcgBlended / maxValue) * 100}%` }}><span>{row.ndcgBlended.toFixed(3)}</span></i>
-                <i className="bar split" style={{ width: `${(row.ndcgSplitTaste / maxValue) * 100}%` }}><span>{row.ndcgSplitTaste.toFixed(3)}</span></i>
+                <i className="bar blended" style={{ "--bar-width": `${(row.ndcgBlended / maxValue) * 100}%` } as React.CSSProperties}><span>{row.ndcgBlended.toFixed(3)}</span></i>
+                <i className="bar split" style={{ "--bar-width": `${(row.ndcgSplitTaste / maxValue) * 100}%` } as React.CSSProperties}><span>{row.ndcgSplitTaste.toFixed(3)}</span></i>
               </div>
               <div className={`cohort-delta ${delta < 0 ? "negative" : ""}`}>{delta >= 0 ? "+" : ""}{delta.toFixed(3)}</div>
             </div>
@@ -339,59 +393,73 @@ function ResearchSection({ bundle }: { bundle: DemoBundle }) {
 
   return (
     <section className="research-section" id="evidence">
-      <header className="research-hero">
-        <div className="research-title"><p>SplitTaste research journal · Issue 01</p><h2>Behind the<br /><em>home row.</em></h2><span>A MovieLens field study in synthetic shared households</span></div>
-        <figure className="research-hero-still">
-          <Image src={filmStills.blueOrbit} alt="An original cinematic illustration of a radio observatory beneath a large moon" width={1600} height={900} sizes="(max-width: 900px) 100vw, 46vw" />
-          <figcaption><b>Figure 01</b><span>The signal is real. The household context is synthetic.</span></figcaption>
-        </figure>
-      </header>
+      <Reveal className="essay-title">
+        <p>SplitTaste · a visual data essay</p>
+        <h2>When one profile<br /><em>remembers everyone.</em></h2>
+        <span>{format(source.ratingEvents)} rating events, {householdDesign.households} synthetic households, and one question: can a few corrections repair a mixed recommendation profile?</span>
+      </Reveal>
 
-      <div className="research-deck"><p>The demo is the front door. This is the work behind it.</p><span>Built for a hiring manager who wants to inspect data engineering, modeling choices, product metrics, and what failed—not just click through a polished prototype.</span></div>
+      <Reveal className="essay-prose essay-lede">
+        <p>MovieLens does not contain households. It contains anonymous people rating movies. So I kept their real rating behavior, then deterministically combined two to four users into synthetic shared accounts.</p>
+        <p><strong>The account is synthetic. The preferences inside it are not.</strong> Original user mappings remain evaluator-only, and rating timestamps are treated as rating events—not viewing sessions.</p>
+      </Reveal>
 
-      <div className="data-scale-grid">
-        <div className="scale-intro"><p>Source dataset</p><h3>MovieLens 32M</h3><span>Official public research dataset</span></div>
-        <div><strong>{format(source.ratingEvents)}</strong><span>rating events</span></div>
-        <div><strong>{format(source.tagApplications)}</strong><span>tag applications</span></div>
-        <div><strong>{source.movies.toLocaleString()}</strong><span>movies</span></div>
-        <div><strong>{source.anonymizedUsers.toLocaleString()}</strong><span>anonymous users</span></div>
-      </div>
+      <Reveal className="source-strip">
+        <div><span>MovieLens 32M</span><strong>{format(source.ratingEvents)}</strong><small>rating events</small></div>
+        <div><span>Public source</span><strong>{source.movies.toLocaleString()}</strong><small>movies</small></div>
+        <div><span>Anonymous</span><strong>{source.anonymizedUsers.toLocaleString()}</strong><small>users</small></div>
+        <div><span>Modeling cohort</span><strong>{format(modelingCohort.ratingEvents)}</strong><small>rating events</small></div>
+      </Reveal>
 
-      <div className="pipeline-story">
-        <div className="pipeline-copy"><p>Reproducible data path</p><h3>From 32 million rows to a browser-safe decision loop.</h3><span>Raw files and evaluator-only mappings never enter the public artifact.</span></div>
-        <div className="pipeline-flow" aria-label="Data pipeline stages">
-          <div><b>01</b><strong>Ingest</strong><span>CSV → normalized Parquet</span><small>DuckDB · schema + checksum gates</small></div>
-          <i>→</i>
-          <div><b>02</b><strong>Model</strong><span>{format(modelingCohort.ratingEvents)} events</span><small>{modelingCohort.users.toLocaleString()} users · {modelingCohort.embeddingDimensions}D embeddings</small></div>
-          <i>→</i>
-          <div><b>03</b><strong>Synthesize</strong><span>{householdDesign.households} households</span><small>Sizes {householdDesign.sizes.join("–")} · fixed seed {householdDesign.fixedSeed}</small></div>
-          <i>→</i>
-          <div><b>04</b><strong>Serve</strong><span>Versioned DemoBundle</span><small>No user IDs · local recompute</small></div>
-        </div>
-      </div>
+      <Reveal className="essay-prose essay-question">
+        <p className="section-number">01 · Constructing the test</p>
+        <h3>First, I needed households that do not exist in the source data.</h3>
+        <p>Eligible users were split chronologically, embedded in {modelingCohort.embeddingDimensions} dimensions, and grouped into households with low, medium, or high taste overlap. A fixed seed makes the full experiment reproducible.</p>
+      </Reveal>
 
-      <div className="research-charts"><CorrectionChart bundle={bundle} /><CohortExplorer rows={bundle.research.cohortResults} /></div>
+      <Reveal className="pipeline-flow">
+        <div><b>01</b><strong>Ingest</strong><span>CSV → Parquet</span><small>Checksum + schema gates</small></div><i>→</i>
+        <div><b>02</b><strong>Model</strong><span>{modelingCohort.users.toLocaleString()} users</span><small>{modelingCohort.embeddingDimensions}D movie embeddings</small></div><i>→</i>
+        <div><b>03</b><strong>Mix</strong><span>{householdDesign.households} households</span><small>Sizes {householdDesign.sizes.join("–")} · seed {householdDesign.fixedSeed}</small></div><i>→</i>
+        <div><b>04</b><strong>Serve</strong><span>DemoBundle</span><small>No IDs or raw timestamps</small></div>
+      </Reveal>
 
-      <div className="research-contact-sheet" aria-label="Original illustrative film stills">
-        <figure><Image src={filmStills.morningCake} alt="An original cinematic illustration of a bakery in morning light" width={1600} height={900} sizes="33vw" /><figcaption><b>01</b><span>Raw taste signals</span></figcaption></figure>
-        <figure><Image src={filmStills.lastWash} alt="An original cinematic illustration of two people in a late-night laundromat" width={1600} height={900} sizes="33vw" /><figcaption><b>02</b><span>Mixed household context</span></figcaption></figure>
-        <figure><Image src={filmStills.afterHours} alt="An original cinematic illustration of an empty roadside diner" width={1600} height={900} sizes="33vw" /><figcaption><b>03</b><span>User-guided repair</span></figcaption></figure>
-      </div>
-      <p className="art-credit">Original illustrative stills generated for this noncommercial demo. They are not official artwork for the MovieLens titles shown above.</p>
+      <Reveal className="essay-prose essay-question">
+        <p className="section-number">02 · The cost of blending</p>
+        <h3>What gets lost when several coherent tastes become one average?</h3>
+        <p>I compared three conditions on held-out rating events: treating the household as one person, inferring editable taste lanes, and an oracle that knows the hidden source mapping.</p>
+      </Reveal>
+      <RankingComparison bundle={bundle} />
 
-      <div className="finding-grid">
-        <article><p>What worked</p><strong>Ranking improved offline after a small number of confirmations.</strong><span>The bootstrap 95% interval for the three-confirmation NDCG delta stayed above zero.</span></article>
-        <article><p>What did not</p><strong>The system did not reliably recover source individuals.</strong><span>ARI was {bundle.evaluation.ari.toFixed(3)} and lane-count accuracy was {(bundle.evaluation.laneCountAccuracy * 100).toFixed(1)}%. That failure shaped the product boundary.</span></article>
-        <article><p>Product decision</p><strong>Expose editable tastes, never “detected people.”</strong><span>The user supplies guest context; uncertainty remains visible and the system can abstain.</span></article>
-      </div>
+      <Reveal className="essay-prose essay-question">
+        <p className="section-number">03 · The smallest useful intervention</p>
+        <h3>How many questions does it take to move the ranking?</h3>
+        <p>The system asks about titles that are both uncertain and likely to change recommendations. Three confirmations produced a measurable offline improvement; more answers kept helping, but with diminishing returns.</p>
+      </Reveal>
+      <CorrectionChart bundle={bundle} />
 
-      <div className="role-proof">
-        <div><span>For a BIE</span><p>Metric definitions, program goal, cohort cuts, confidence gate, and a user-facing decision loop.</p></div>
-        <div><span>For a Data Engineer</span><p>Checksum-validated ingestion, normalized Parquet, deterministic artifacts, privacy separation, and CI fixtures.</p></div>
-        <div><span>For a Data Scientist</span><p>Baseline vs. inferred vs. oracle, chronological holdout, correction curves, abstention, and failure analysis.</p></div>
-      </div>
+      <Reveal className="essay-prose essay-question">
+        <p className="section-number">04 · Where the idea breaks</p>
+        <h3>The average result hides the difficult households.</h3>
+        <p>Switch the cohort below. SplitTaste helped many groups, but the middle-activity cohort regressed. That failure is product information, not a footnote.</p>
+      </Reveal>
+      <CohortExplorer rows={bundle.research.cohortResults} />
 
-      <Evidence bundle={bundle} />
+      <Reveal className="honesty-section">
+        <p className="section-number">05 · The honest boundary</p>
+        <h3>The model found useful tastes.<br />It did <em>not</em> recover people.</h3>
+        <div className="honesty-numbers"><div><strong>{bundle.evaluation.ari.toFixed(3)}</strong><span>ARI · source-person recovery</span></div><div><strong>{(bundle.evaluation.laneCountAccuracy * 100).toFixed(1)}%</strong><span>correct lane-count selection</span></div></div>
+        <p>That result changed the product. SplitTaste exposes voluntary, editable taste lanes—not “detected people,” demographics, family roles, or unauthorized account users.</p>
+      </Reveal>
+
+      <Reveal className="essay-method">
+        <h3>Methodology & limitations</h3>
+        <p><strong>What this demonstrates.</strong> A reproducible ETL and evaluation path, a baseline–model–oracle comparison, cohort diagnostics, confidence gates, and a user-facing correction loop.</p>
+        <p><strong>What it does not demonstrate.</strong> Real household identification, confirmed watches, engagement lift, retention lift, production readiness, or any result using Prime Video data.</p>
+        <p><strong>What I would test next.</strong> A prospective study where people voluntarily label a small number of mixed-profile events, with calibration and abstention thresholds set before measuring recommendation quality.</p>
+      </Reveal>
+
+      <Reveal><Evidence bundle={bundle} /></Reveal>
     </section>
   );
 }
