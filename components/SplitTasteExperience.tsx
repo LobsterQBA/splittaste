@@ -1,31 +1,166 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { bestOtherLane, laneRecommendations, type Assignments } from "@/lib/recommend";
-import type { DemoBundle, LaneId, MovieVector } from "@/types/demo";
+import type { CohortResult, DemoBundle, LaneId, MovieVector, TasteLane } from "@/types/demo";
 
 type GuestAnswer = "mine" | "guest" | "unsure";
+type RepairPhase = "idle" | "question-one" | "question-two" | "applying" | "complete";
+
+const laneCopy: Record<LaneId, { name: string; description: string }> = {
+  "lane-a": { name: "Pressure Cookers", description: "Tense choices, uneasy laughs, and consequences closing in." },
+  "lane-b": { name: "Big Ideas & Strange Worlds", description: "Speculative worlds, odd humor, and stories that bend the rules." },
+  "lane-c": { name: "Character Stories", description: "People under pressure, moral choices, and lives that stay with you." },
+};
+
+const cardThemes = ["ember", "ocean", "violet", "sand", "forest", "cobalt"] as const;
+
+function themeFor(movie: MovieVector) {
+  const seed = [...movie.movieId].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return cardThemes[seed % cardThemes.length];
+}
 
 function ArrowIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M5 12h13M13 6l6 6-6 6" />
-    </svg>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
   );
 }
 
-function RecommendationRow({ movies, tone = "dark" }: { movies: MovieVector[]; tone?: "dark" | "light" }) {
+function PlayIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7 8 5-8 5V7Z" /></svg>;
+}
+
+function MovieCard({ movie, index, signal, compact = false }: { movie: MovieVector; index?: number; signal?: string; compact?: boolean }) {
   return (
-    <div className={`recommendation-row ${tone}`}>
-      {movies.map((movie, index) => (
-        <article className="recommendation-card" key={`${movie.movieId}-${index}`}>
-          <span className="rank">{String(index + 1).padStart(2, "0")}</span>
-          <div>
-            <h4>{movie.title}</h4>
-            <p>{movie.genres.slice(0, 2).join(" / ")}</p>
+    <article className={`movie-card theme-${themeFor(movie)} ${compact ? "compact" : ""}`}>
+      <div className="movie-art" aria-hidden="true">
+        <i /><i /><i />
+        <span className="art-mark">{String(index ?? 1).padStart(2, "0")}</span>
+        <strong>{movie.title}</strong>
+      </div>
+      <div className="movie-meta">
+        <div><h3>{movie.title}</h3><p>{movie.genres.slice(0, 2).join(" · ")}</p></div>
+        {signal && <span className="signal-tag">{signal}</span>}
+      </div>
+    </article>
+  );
+}
+
+function ContentRail({ title, note, movies, signalFirst = false, id }: { title: string; note?: string; movies: MovieVector[]; signalFirst?: boolean; id?: string }) {
+  return (
+    <section className="content-rail" id={id}>
+      <header><h2>{title}</h2>{note && <p>{note}</p>}</header>
+      <div className="rail-track">
+        {movies.map((movie, index) => (
+          <MovieCard key={`${movie.movieId}-${index}`} movie={movie} index={index + 1} signal={signalFirst && index === 0 ? "New signal" : undefined} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function LaneOption({ lane, selected, onSelect }: { lane: TasteLane; selected: boolean; onSelect: () => void }) {
+  const copy = laneCopy[lane.id];
+  return (
+    <button
+      type="button"
+      className={`lane-option ${selected ? "selected" : ""}`}
+      style={{ "--lane-accent": lane.accent } as React.CSSProperties}
+      onClick={onSelect}
+      aria-pressed={selected}
+    >
+      <span className="lane-preview" aria-hidden="true">
+        {lane.anchorTitles.slice(0, 3).map((title, index) => <i key={title} className={`preview-${index + 1}`}>{title.slice(0, 1)}</i>)}
+      </span>
+      <span className="lane-copy"><strong>{copy.name}</strong><small>{copy.description}</small></span>
+      <span className="selection-ring">{selected ? "✓" : ""}</span>
+    </button>
+  );
+}
+
+function RepairDialog({
+  bundle,
+  phase,
+  ownerLane,
+  candidate,
+  onLane,
+  onAnswer,
+  onClose,
+}: {
+  bundle: DemoBundle;
+  phase: RepairPhase;
+  ownerLane: LaneId | null;
+  candidate: MovieVector;
+  onLane: (lane: LaneId) => void;
+  onAnswer: (answer: GuestAnswer) => void;
+  onClose: () => void;
+}) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (phase === "idle" || phase === "complete") return;
+    const firstButton = dialogRef.current?.querySelector<HTMLButtonElement>("button:not(.dialog-close)");
+    firstButton?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => event.key === "Escape" && onClose();
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [onClose, phase]);
+
+  if (phase === "idle" || phase === "complete") return null;
+
+  return (
+    <div className="dialog-backdrop" role="presentation">
+      <div className="repair-dialog" role="dialog" aria-modal="true" aria-labelledby="repair-title" ref={dialogRef}>
+        <header className="dialog-header">
+          <div className="dialog-brand">SplitTaste <span>Repair</span></div>
+          <div className="step-dots" aria-label={phase === "question-one" ? "Step 1 of 2" : "Step 2 of 2"}>
+            <i className="active" /><i className={phase !== "question-one" ? "active" : ""} />
           </div>
-        </article>
-      ))}
+          <button className="dialog-close" onClick={onClose} aria-label="Close repair flow">×</button>
+        </header>
+
+        <div className={`dialog-stage ${phase}`}>
+          {phase === "question-one" && (
+            <div className="dialog-question question-one-panel">
+              <p className="step-label">One quick check</p>
+              <h2 id="repair-title">Which row feels most like you?</h2>
+              <p className="dialog-explainer">We found three recurring patterns in this account. You decide which one should lead your home screen.</p>
+              <div className="lane-options">
+                {bundle.lanes.map((lane) => (
+                  <LaneOption key={lane.id} lane={lane} selected={ownerLane === lane.id} onSelect={() => onLane(lane.id)} />
+                ))}
+              </div>
+              <p className="dialog-footnote">Taste patterns are not detected people or household roles.</p>
+            </div>
+          )}
+
+          {phase === "question-two" && (
+            <div className="dialog-question question-two-panel">
+              <div className="candidate-preview"><MovieCard movie={candidate} compact /></div>
+              <div className="candidate-question">
+                <p className="step-label">One title can clarify the mix</p>
+                <h2 id="repair-title">Was this your pick?</h2>
+                <p className="dialog-explainer">It sits between taste patterns, so this answer is more useful than confirming an obvious title.</p>
+                <div className="answer-buttons">
+                  <button onClick={() => onAnswer("mine")}><span>Yes, that was me</span><ArrowIcon /></button>
+                  <button onClick={() => onAnswer("guest")}><span>No, probably a guest</span><ArrowIcon /></button>
+                  <button onClick={() => onAnswer("unsure")}><span>I&apos;m not sure</span><ArrowIcon /></button>
+                </div>
+                <p className="dialog-footnote">“Guest” only comes from your answer. SplitTaste does not infer who watched.</p>
+              </div>
+            </div>
+          )}
+
+          {phase === "applying" && (
+            <div className="applying-panel" aria-live="polite">
+              <div className="reweight-animation" aria-hidden="true"><i /><i /><i /><span>✓</span></div>
+              <p className="step-label">Updating this device</p>
+              <h2 id="repair-title">Rebalancing your home row…</h2>
+              <p>Keeping every taste. Changing which one leads.</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -35,258 +170,256 @@ function Evidence({ bundle }: { bundle: DemoBundle }) {
   const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
   return (
     <details className="evidence-panel">
-      <summary>
-        <span>How we tested the idea</span>
-        <span className="summary-action">Open data + metrics</span>
-      </summary>
+      <summary><span>Open the evaluation</span><span>Data, metrics, limitations <b>+</b></span></summary>
       <div className="evidence-grid">
-        <div className="metric-lead">
-          <p className="micro-label">Offline NDCG@10</p>
-          <strong>{evaluation.ndcgSplitTaste.toFixed(3)}</strong>
-          <span>after three confirmations · {evaluation.householdCount} synthetic households</span>
-        </div>
+        <div className="metric-lead"><p>Offline NDCG@10</p><strong>{evaluation.ndcgSplitTaste.toFixed(3)}</strong><span>after three confirmations across {evaluation.householdCount} synthetic households</span></div>
         <dl>
-          <div><dt>One blended account</dt><dd>{evaluation.ndcgBlended.toFixed(3)}</dd></div>
-          <div><dt>SplitTaste, 3 answers</dt><dd>{evaluation.ndcgSplitTaste.toFixed(3)}</dd></div>
-          <div><dt>Oracle upper bound</dt><dd>{evaluation.ndcgOracle.toFixed(3)}</dd></div>
+          <div><dt>Blended account</dt><dd>{evaluation.ndcgBlended.toFixed(3)}</dd></div>
+          <div><dt>SplitTaste</dt><dd>{evaluation.ndcgSplitTaste.toFixed(3)}</dd></div>
+          <div><dt>Oracle bound</dt><dd>{evaluation.ndcgOracle.toFixed(3)}</dd></div>
           <div><dt>Lane recovery ARI / NMI</dt><dd>{evaluation.ari.toFixed(2)} / {evaluation.nmi.toFixed(2)}</dd></div>
           <div><dt>Abstention precision</dt><dd>{percent(evaluation.abstentionPrecision)}</dd></div>
-          <div><dt>Abstention coverage</dt><dd>{percent(evaluation.abstentionCoverage)}</dd></div>
+          <div><dt>Coverage</dt><dd>{percent(evaluation.abstentionCoverage)}</dd></div>
         </dl>
         <div className="claim-box">
           <span className={evaluation.claimSupported ? "claim-dot supported" : "claim-dot"} />
-          <div>
-            <strong>{evaluation.claimSupported ? "Offline ranking improvement supported" : "Hypothesis under evaluation"}</strong>
-            <p>
-              95% CI for the NDCG delta: [{evaluation.deltaCi95[0].toFixed(3)}, {evaluation.deltaCi95[1].toFixed(3)}].
-              This does not measure viewing time, engagement, retention, or production lift.
-            </p>
-          </div>
+          <p><strong>{evaluation.claimSupported ? "Offline ranking improvement supported." : "Hypothesis under evaluation."}</strong> 95% CI for NDCG delta: [{evaluation.deltaCi95[0].toFixed(3)}, {evaluation.deltaCi95[1].toFixed(3)}]. This is not measured viewing, engagement, retention, or production lift.</p>
         </div>
       </div>
     </details>
   );
 }
 
+function CorrectionChart({ bundle }: { bundle: DemoBundle }) {
+  const points = bundle.evaluation.correctionCurve;
+  const values = points.map((point) => point.ndcgAt10);
+  const min = Math.min(...values) - 0.002;
+  const max = Math.max(...values) + 0.002;
+  const coordinates = points.map((point, index) => ({
+    x: 42 + index * 142,
+    y: 145 - ((point.ndcgAt10 - min) / (max - min)) * 105,
+    ...point,
+  }));
+
+  return (
+    <div className="correction-chart">
+      <div className="chart-heading"><div><p>Correction curve</p><h3>A few answers move the ranking.</h3></div><span>NDCG@10 · offline</span></div>
+      <svg viewBox="0 0 510 190" role="img" aria-label="NDCG at 10 improves as confirmations increase from zero to ten">
+        <title>Correction curve for zero, three, five, and ten confirmations</title>
+        {[40, 75, 110, 145].map((y) => <line key={y} x1="42" x2="468" y1={y} y2={y} className="grid-line" />)}
+        <polyline points={coordinates.map((point) => `${point.x},${point.y}`).join(" ")} className="curve-line" />
+        {coordinates.map((point) => (
+          <g key={point.confirmations}>
+            <circle cx={point.x} cy={point.y} r="5" />
+            <text x={point.x} y={point.y - 13} textAnchor="middle">{point.ndcgAt10.toFixed(3)}</text>
+            <text x={point.x} y="173" textAnchor="middle">{point.confirmations} answers</text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+function CohortExplorer({ rows }: { rows: CohortResult[] }) {
+  const dimensions: CohortResult["dimension"][] = ["overlap", "household size", "activity", "sparsity"];
+  const [dimension, setDimension] = useState<CohortResult["dimension"]>("overlap");
+  const visibleRows = rows.filter((row) => row.dimension === dimension);
+  const maxValue = Math.max(...visibleRows.flatMap((row) => [row.ndcgBlended, row.ndcgSplitTaste])) * 1.08;
+
+  return (
+    <div className="cohort-explorer">
+      <div className="chart-heading"><div><p>Cohort EDA</p><h3>The average hides where the idea struggles.</h3></div><span>72 households · 24 per displayed cohort</span></div>
+      <div className="cohort-tabs" role="tablist" aria-label="Cohort dimension">
+        {dimensions.map((item) => <button key={item} role="tab" aria-selected={dimension === item} className={dimension === item ? "active" : ""} onClick={() => setDimension(item)}>{item}</button>)}
+      </div>
+      <div className="bar-legend"><span><i className="blended" />Blended</span><span><i className="split" />SplitTaste</span></div>
+      <div className="cohort-bars">
+        {visibleRows.map((row) => {
+          const delta = row.ndcgSplitTaste - row.ndcgBlended;
+          return (
+            <div className="cohort-row" key={`${row.dimension}-${row.cohort}`}>
+              <div className="cohort-label"><strong>{row.cohort}</strong><span>{row.households} households</span></div>
+              <div className="bar-pair">
+                <i className="bar blended" style={{ width: `${(row.ndcgBlended / maxValue) * 100}%` }}><span>{row.ndcgBlended.toFixed(3)}</span></i>
+                <i className="bar split" style={{ width: `${(row.ndcgSplitTaste / maxValue) * 100}%` }}><span>{row.ndcgSplitTaste.toFixed(3)}</span></i>
+              </div>
+              <div className={`cohort-delta ${delta < 0 ? "negative" : ""}`}>{delta >= 0 ? "+" : ""}{delta.toFixed(3)}</div>
+            </div>
+          );
+        })}
+      </div>
+      <p className="cohort-reading">Read this as directional offline evidence, not a population estimate. Switch cohorts to inspect heterogeneity and failure cases.</p>
+    </div>
+  );
+}
+
+function ResearchSection({ bundle }: { bundle: DemoBundle }) {
+  const { source, modelingCohort, householdDesign } = bundle.research;
+  const format = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(value >= 10_000_000 ? 0 : 1)}M` : value.toLocaleString();
+
+  return (
+    <section className="research-section" id="evidence">
+      <header className="research-hero">
+        <div><p>02 · Data & evaluation</p><h2>The demo is the front door.<br />This is the work behind it.</h2></div>
+        <p>Built for a hiring manager who wants to inspect data engineering, modeling choices, product metrics, and what failed—not just click through a polished prototype.</p>
+      </header>
+
+      <div className="data-scale-grid">
+        <div className="scale-intro"><p>Source dataset</p><h3>MovieLens 32M</h3><span>Official public research dataset</span></div>
+        <div><strong>{format(source.ratingEvents)}</strong><span>rating events</span></div>
+        <div><strong>{format(source.tagApplications)}</strong><span>tag applications</span></div>
+        <div><strong>{source.movies.toLocaleString()}</strong><span>movies</span></div>
+        <div><strong>{source.anonymizedUsers.toLocaleString()}</strong><span>anonymous users</span></div>
+      </div>
+
+      <div className="pipeline-story">
+        <div className="pipeline-copy"><p>Reproducible data path</p><h3>From 32 million rows to a browser-safe decision loop.</h3><span>Raw files and evaluator-only mappings never enter the public artifact.</span></div>
+        <div className="pipeline-flow" aria-label="Data pipeline stages">
+          <div><b>01</b><strong>Ingest</strong><span>CSV → normalized Parquet</span><small>DuckDB · schema + checksum gates</small></div>
+          <i>→</i>
+          <div><b>02</b><strong>Model</strong><span>{format(modelingCohort.ratingEvents)} events</span><small>{modelingCohort.users.toLocaleString()} users · {modelingCohort.embeddingDimensions}D embeddings</small></div>
+          <i>→</i>
+          <div><b>03</b><strong>Synthesize</strong><span>{householdDesign.households} households</span><small>Sizes {householdDesign.sizes.join("–")} · fixed seed {householdDesign.fixedSeed}</small></div>
+          <i>→</i>
+          <div><b>04</b><strong>Serve</strong><span>Versioned DemoBundle</span><small>No user IDs · local recompute</small></div>
+        </div>
+      </div>
+
+      <div className="research-charts"><CorrectionChart bundle={bundle} /><CohortExplorer rows={bundle.research.cohortResults} /></div>
+
+      <div className="finding-grid">
+        <article><p>What worked</p><strong>Ranking improved offline after a small number of confirmations.</strong><span>The bootstrap 95% interval for the three-confirmation NDCG delta stayed above zero.</span></article>
+        <article><p>What did not</p><strong>The system did not reliably recover source individuals.</strong><span>ARI was {bundle.evaluation.ari.toFixed(3)} and lane-count accuracy was {(bundle.evaluation.laneCountAccuracy * 100).toFixed(1)}%. That failure shaped the product boundary.</span></article>
+        <article><p>Product decision</p><strong>Expose editable tastes, never “detected people.”</strong><span>The user supplies guest context; uncertainty remains visible and the system can abstain.</span></article>
+      </div>
+
+      <div className="role-proof">
+        <div><span>For a BIE</span><p>Metric definitions, program goal, cohort cuts, confidence gate, and a user-facing decision loop.</p></div>
+        <div><span>For a Data Engineer</span><p>Checksum-validated ingestion, normalized Parquet, deterministic artifacts, privacy separation, and CI fixtures.</p></div>
+        <div><span>For a Data Scientist</span><p>Baseline vs. inferred vs. oracle, chronological holdout, correction curves, abstention, and failure analysis.</p></div>
+      </div>
+
+      <Evidence bundle={bundle} />
+    </section>
+  );
+}
+
 export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
+  const [phase, setPhase] = useState<RepairPhase>("idle");
   const [ownerLane, setOwnerLane] = useState<LaneId | null>(null);
   const [guestAnswer, setGuestAnswer] = useState<GuestAnswer | null>(null);
-  const resultsRef = useRef<HTMLElement>(null);
+  const [showBefore, setShowBefore] = useState(false);
+  const homeRowRef = useRef<HTMLElement>(null);
   const candidate = bundle.correctionCandidates[0];
-  const complete = ownerLane !== null && guestAnswer !== null;
 
   const assignments = useMemo<Assignments>(() => {
     if (!ownerLane || !guestAnswer || guestAnswer === "unsure") return {};
-    return {
-      [candidate.movieId]: guestAnswer === "mine"
-        ? ownerLane
-        : bestOtherLane(bundle, ownerLane, candidate),
-    };
+    return { [candidate.movieId]: guestAnswer === "mine" ? ownerLane : bestOtherLane(bundle, ownerLane, candidate) };
   }, [bundle, candidate, guestAnswer, ownerLane]);
 
-  const recommendations = useMemo(
-    () => laneRecommendations(bundle, assignments, 4),
-    [bundle, assignments],
-  );
-
+  const recommendations = useMemo(() => laneRecommendations(bundle, assignments, 5), [bundle, assignments]);
+  const complete = phase === "complete" && ownerLane !== null;
   const selectedLane = bundle.lanes.find((lane) => lane.id === ownerLane);
-  const mixedTitles = [
-    candidate.title,
-    ...bundle.lanes.flatMap((lane) => lane.anchorTitles.slice(0, 2)),
-  ].slice(0, 7);
+  const homeMovies = complete && !showBefore && ownerLane ? recommendations[ownerLane] : bundle.blendedRecommendations.slice(0, 5);
+  const recentMovies = [...bundle.correctionCandidates.slice(0, 3), ...bundle.recommendationCandidates.slice(0, 2)];
+  const discoveryMovies = bundle.recommendationCandidates.slice(10, 15);
+
+  const startRepair = () => {
+    setShowBefore(false);
+    setPhase("question-one");
+  };
+
+  const selectLane = (lane: LaneId) => {
+    setOwnerLane(lane);
+    window.setTimeout(() => setPhase("question-two"), 220);
+  };
+
+  const answerGuest = (answer: GuestAnswer) => {
+    setGuestAnswer(answer);
+    setPhase("applying");
+    window.setTimeout(() => {
+      setPhase("complete");
+      window.setTimeout(() => homeRowRef.current?.scrollIntoView?.({ behavior: "smooth", block: "center" }), 80);
+    }, 760);
+  };
 
   const reset = () => {
+    setPhase("idle");
     setOwnerLane(null);
     setGuestAnswer(null);
-    document.getElementById("repair")?.scrollIntoView({ behavior: "smooth" });
+    setShowBefore(false);
   };
 
   return (
-    <main>
-      <div className="grain" />
-      <nav className="masthead" aria-label="Primary">
-        <a href="#top" className="wordmark">SplitTaste<span>●</span></a>
-        <div className="nav-note">A user-controlled recommendation repair demo</div>
-        <a href="#evidence">Evidence / 04</a>
+    <main className="streaming-app">
+      <nav className="stream-nav" aria-label="Primary">
+        <a href="#home" className="brand">SplitTaste<span>+</span></a>
+        <div className="nav-links"><a href="#home">Product demo</a><a href="#browse">Browse</a><a href="#evidence">Data & evaluation</a></div>
+        <button className="profile-control" onClick={startRepair}><span>J</span><b>Your profile</b><i>⌄</i></button>
       </nav>
 
-      <section className="hero" id="top">
-        <p className="eyebrow">A familiar streaming problem</p>
-        <h1>
-          My friend used<br />my TV. Now my<br /><em>recommendations<br />feel like theirs.</em>
-        </h1>
-        <div className="hero-bottom">
-          <p>
-            They pressed play on my profile. I didn&apos;t stop the movie to create a guest account.
-            A few nights later, my home screen no longer felt like mine.
-          </p>
-          <button className="primary-action" onClick={() => document.getElementById("moment")?.scrollIntoView({ behavior: "smooth" })}>
-            See what happened <ArrowIcon />
-          </button>
+      <section className="stream-hero" id="home">
+        <div className="living-room-art" aria-hidden="true">
+          <div className="window-glow" /><div className="tv-frame"><div className="tv-light"><span>PLAY</span></div></div><div className="couch"><i /><i /></div><div className="room-shadow" />
         </div>
-        <div className="signal-line" aria-hidden="true">
-          {Array.from({ length: 42 }, (_, index) => <i key={index} style={{ height: `${12 + ((index * 17) % 52)}px` }} />)}
-        </div>
-      </section>
-
-      <section className="moment" id="moment">
-        <div className="moment-copy">
-          <p className="section-number">01 / The moment</p>
-          <h2>Profiles solve the data problem.<br /><em>They don&apos;t solve the human moment.</em></h2>
-          <p className="body-copy">
-            Switching profiles works when people remember. But on a couch, at a friend&apos;s place,
-            the natural action is to press play. The result is one history carrying several different tastes.
-          </p>
-        </div>
-        <div className="remote-scene" aria-label="A guest presses play without switching profiles">
-          <div className="profile-pill"><span>●</span> Your profile</div>
-          <div className="remote-button">▶</div>
-          <div className="remote-caption">The lowest-friction choice wins.</div>
-        </div>
-      </section>
-
-      <section className="mixed-history">
-        <p className="section-number">02 / One account, mixed signals</p>
-        <div className="history-header">
-          <h2>The account remembers the titles.<br />It doesn&apos;t know the context.</h2>
-          <p>
-            SplitTaste looks for recurring taste patterns in the mixed history.
-            It does not identify people, ages, relationships, or who owns the account.
-          </p>
-        </div>
-        <div className="title-stream" aria-label="Example titles from a mixed history">
-          {mixedTitles.map((title, index) => (
-            <span key={`${title}-${index}`} className={`stream-title stream-${(index % 3) + 1}`}>{title}</span>
-          ))}
-        </div>
-        <button className="primary-action repair-cta" onClick={() => document.getElementById("repair")?.scrollIntoView({ behavior: "smooth" })}>
-          Fix my recommendations <ArrowIcon />
-        </button>
-      </section>
-
-      <section className="repair" id="repair">
-        <header className="repair-header">
-          <div>
-            <p className="section-number">03 / A two-question repair</p>
-            <h2>We found three consistent<br />taste patterns.</h2>
+        <div className="hero-vignette" />
+        <div className="hero-copy">
+          <p className="hero-kicker"><span>Guest night</span> · Your profile</p>
+          <h1>A friend pressed play.<br />Your home row changed.</h1>
+          <p>They used the profile already open on your TV. No one did anything wrong, but now their taste is mixed into yours.</p>
+          <div className="hero-actions">
+            <button className="repair-button" onClick={startRepair}><span className="button-icon">✦</span>Repair my recommendations</button>
+            <a className="quiet-button" href="#why"><PlayIcon />See the idea</a>
           </div>
-          <div className="privacy-note">You label the pattern.<br />The model does not label the person.</div>
-        </header>
+          <div className="hero-facts"><span>2 questions</span><span>Runs locally</span><span>No identity inference</span></div>
+        </div>
+      </section>
 
-        <fieldset className="question-block">
-          <legend><span>Question 1 of 2</span>Which taste feels most like yours?</legend>
-          <div className="taste-options">
-            {bundle.lanes.map((lane) => (
-              <button
-                type="button"
-                key={lane.id}
-                className={`taste-option ${ownerLane === lane.id ? "selected" : ""}`}
-                style={{ "--lane-accent": lane.accent } as React.CSSProperties}
-                onClick={() => { setOwnerLane(lane.id); setGuestAnswer(null); }}
-                aria-pressed={ownerLane === lane.id}
-              >
-                <span className="lane-dot" />
-                <span className="micro-label">{lane.eyebrow}</span>
-                <strong>{lane.name}</strong>
-                <span className="lane-description">{lane.description}</span>
-                <span className="anchor-list">{lane.anchorTitles.slice(0, 3).join(" · ")}</span>
-                <span className="choose-label">{ownerLane === lane.id ? "This feels like me ✓" : "Choose this taste"}</span>
-              </button>
-            ))}
+      <div className="catalog" id="browse">
+        <ContentRail title="Recently watched on this profile" note="One account. More than one taste." movies={recentMovies} signalFirst />
+
+        <section className={`content-rail home-recommendations ${complete && !showBefore ? "repaired" : ""}`} ref={homeRowRef} aria-live="polite">
+          <header>
+            <div>
+              <h2>{complete && !showBefore ? "Repaired for you" : "Recommended for you"}</h2>
+              <p>{complete && selectedLane && !showBefore ? `${laneCopy[selectedLane.id].name} now leads this row.` : "Every recent signal currently has equal influence."}</p>
+            </div>
+            {complete ? (
+              <div className="compare-switch" role="group" aria-label="Compare recommendations">
+                <button className={showBefore ? "active" : ""} onClick={() => setShowBefore(true)}>Before</button>
+                <button className={!showBefore ? "active" : ""} onClick={() => setShowBefore(false)}>Repaired</button>
+              </div>
+            ) : <button className="rail-repair" onClick={startRepair}>This row feels off <ArrowIcon /></button>}
+          </header>
+          <div className="rail-track recommendation-update" key={`${complete}-${showBefore}-${ownerLane}`}>
+            {homeMovies.map((movie, index) => <MovieCard key={`${movie.movieId}-${index}`} movie={movie} index={index + 1} />)}
           </div>
-        </fieldset>
-
-        {ownerLane && (
-          <fieldset className="question-block second-question">
-            <legend>
-              <span>Question 2 of 2</span>
-              Was <em>{candidate.title}</em> your choice?
-            </legend>
-            <p className="question-context">
-              This title sits between patterns, so one answer changes the recommendation weights more than confirming an obvious title.
-            </p>
-            <div className="answer-options">
-              {([
-                ["mine", "Yes, that was me"],
-                ["guest", "No, probably a guest"],
-                ["unsure", "I'm not sure"],
-              ] as [GuestAnswer, string][]).map(([value, label]) => (
-                <button
-                  type="button"
-                  key={value}
-                  className={guestAnswer === value ? "selected" : ""}
-                  onClick={() => setGuestAnswer(value)}
-                  aria-pressed={guestAnswer === value}
-                >
-                  <span>{label}</span><span aria-hidden="true">→</span>
-                </button>
-              ))}
+          {complete && !showBefore && (
+            <div className="repair-receipt">
+              <div className="receipt-icon">✓</div>
+              <div><strong>Your taste is leading again.</strong><p>We changed the weights, not the history. Other taste patterns are still available.</p></div>
+              <button onClick={reset}>Undo repair</button>
             </div>
-          </fieldset>
-        )}
+          )}
+        </section>
 
-        {complete && (
-          <button className="reveal-button" onClick={() => resultsRef.current?.scrollIntoView({ behavior: "smooth" })}>
-            See my repaired recommendations <ArrowIcon />
-          </button>
-        )}
+        <ContentRail title="Stories that stay with you" note="A quieter lane from this account" movies={discoveryMovies} />
+      </div>
+
+      <section className="product-story" id="why">
+        <div className="story-index">01</div>
+        <div className="story-copy"><p>The product idea</p><h2>Profiles prevent the mix.<br />SplitTaste repairs it.</h2></div>
+        <div className="story-body">
+          <p>On a couch, the lowest-friction action wins: people press play. SplitTaste looks for recurring taste patterns, then asks the account owner for just enough context to rebalance the home screen.</p>
+          <ul><li>User-controlled labels</li><li>Uncertain answers are allowed</li><li>Other tastes are kept, not erased</li></ul>
+        </div>
       </section>
 
-      <section className={`results ${complete ? "is-revealed" : ""}`} ref={resultsRef} aria-live="polite">
-        {complete && selectedLane && (
-          <>
-            <header className="result-hero">
-              <div>
-                <p className="section-number">The result</p>
-                <h2>Your recommendations<br /><em>feel like yours again.</em></h2>
-              </div>
-              <div className="result-stamp">Updated in your browser<br />No identity inferred</div>
-            </header>
+      <ResearchSection bundle={bundle} />
 
-            <div className="comparison">
-              <section className="before-panel">
-                <div className="panel-heading"><span>Before</span><p>Every taste had equal influence.</p></div>
-                <RecommendationRow movies={bundle.blendedRecommendations.slice(0, 4)} tone="light" />
-              </section>
-              <section className="after-panel" style={{ "--lane-accent": selectedLane.accent } as React.CSSProperties}>
-                <div className="panel-heading">
-                  <span>After</span>
-                  <p><strong>{selectedLane.name}</strong> now leads this home row.</p>
-                </div>
-                <RecommendationRow movies={recommendations[selectedLane.id]} />
-              </section>
-            </div>
+      <footer><div className="brand">SplitTaste<span>+</span></div><p>Independent, noncommercial research demo. Not affiliated with Amazon or Prime Video.</p><a href="#home">Back to top ↑</a></footer>
 
-            <div className="what-changed">
-              <div>
-                <p className="micro-label">What changed</p>
-                <h3>We changed the weights,<br />not the history.</h3>
-              </div>
-              <p>
-                Your chosen taste now leads the recommendation row. The other patterns are kept, not deleted,
-                and can still be used for a guest night or another household member. “Guest” was your answer—not a model inference.
-              </p>
-              <button onClick={reset}>Undo and try another answer</button>
-            </div>
-          </>
-        )}
-      </section>
-
-      <section id="evidence" className="evidence-section">
-        <p className="section-number">04 / Evidence, with boundaries</p>
-        <h2>A product idea backed by<br />an honest offline test.</h2>
-        <p className="evidence-intro">
-          MovieLens has anonymous rating events, not households or confirmed watch sessions. We therefore combined real users into
-          deterministic synthetic shared accounts, kept the original mapping only for evaluation, and tested whether a few corrections improve ranking.
-        </p>
-        <Evidence bundle={bundle} />
-      </section>
-
-      <footer>
-        <div className="footer-thesis">Shared accounts are mixtures<br />with the wrong weights.</div>
-        <div className="footer-disclosures">{bundle.disclosures.map((item) => <p key={item}>{item}</p>)}</div>
-        <div className="footer-mark">ST / 2026</div>
-      </footer>
+      <RepairDialog bundle={bundle} phase={phase} ownerLane={ownerLane} candidate={candidate} onLane={selectLane} onAnswer={answerGuest} onClose={() => setPhase("idle")} />
     </main>
   );
 }

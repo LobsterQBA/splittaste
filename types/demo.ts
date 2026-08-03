@@ -34,8 +34,17 @@ export interface MetricPoint {
   assignmentAccuracy: number;
 }
 
+export interface CohortResult {
+  dimension: "overlap" | "household size" | "activity" | "sparsity";
+  cohort: string;
+  households: number;
+  ndcgBlended: number;
+  ndcgSplitTaste: number;
+  ari: number;
+}
+
 export interface DemoBundle {
-  schemaVersion: "1.0";
+  schemaVersion: "1.1";
   datasetSnapshotDate: string;
   dataset: {
     name: string;
@@ -74,6 +83,28 @@ export interface DemoBundle {
     deltaCi95: [number, number];
     claimSupported: boolean;
     correctionCurve: MetricPoint[];
+  };
+  research: {
+    source: {
+      ratingEvents: number;
+      tagApplications: number;
+      movies: number;
+      anonymizedUsers: number;
+    };
+    modelingCohort: {
+      ratingEvents: number;
+      users: number;
+      movies: number;
+      embeddingDimensions: number;
+      candidateCatalog: number;
+    };
+    householdDesign: {
+      households: number;
+      sizes: number[];
+      overlapStrata: string[];
+      fixedSeed: number;
+    };
+    cohortResults: CohortResult[];
   };
   disclosures: string[];
 }

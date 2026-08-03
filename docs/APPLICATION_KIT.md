@@ -15,15 +15,31 @@ The metric bullet is valid only while the committed `artifacts/evaluation.json` 
 
 ## 90-second demo script
 
-“The idea came from a very ordinary moment. When I watch something at a friend's home, or a friend uses my TV, we rarely stop to create or switch to a guest profile. We just press play. Later, those choices are mixed into the account owner's recommendations.
+“I would review this in two parts: first the 30-second customer experience, then the data and evaluation behind it.
+
+The idea came from a very ordinary moment. When I watch something at a friend's home, or a friend uses my TV, we rarely stop to create or switch to a guest profile. We just press play. Later, those choices are mixed into the account owner's recommendations.
 
 Profiles can prevent that problem, but only if people remember in the moment. So I asked a different product question: can we repair a mixed recommendation profile with almost no effort?
 
 This is SplitTaste. It analyzes the mixed history and surfaces three anonymous taste patterns, but it does not claim those patterns are people. First, I choose which taste feels most like mine. Then it asks about one title where my answer carries high information: was this my choice, probably a guest's, or am I unsure? The interface immediately compares the blended row with a reweighted row. Other tastes are kept rather than deleted, and the guest label comes from me, not the model.
 
-Behind the interaction is a reproducible MovieLens 32M pipeline. I construct deterministic synthetic households, preserve the source-user mapping only for evaluation, and compare a blended baseline, inferred lanes, and an oracle. The evidence panel reports clustering, ranking, correction-curve, and abstention metrics. Offline results are never presented as engagement lift.
+That is the product demo. The second part is the evidence behind it. I ingested MovieLens 32M into normalized Parquet, learned 32-dimensional movie embeddings from a deterministic modeling cohort, and constructed 72 synthetic households across overlap, household-size, activity, and sparsity cohorts. The source-user mapping stays evaluator-only. I compare a blended baseline, inferred lanes, and an oracle, then report clustering, ranking, correction-curve, and abstention metrics. Offline results are never presented as engagement lift.
 
 The product decision I wanted to demonstrate is that personalization metrics should close a user-facing loop. The offline result supports a narrow ranking improvement after three confirmations, while weak identity recovery reinforces the product boundary: help users reweight tastes, do not pretend to identify people. The next test would be whether real account owners understand this two-question repair and find the result useful.”
+
+## What to emphasize by interviewer
+
+### Business Intelligence Engineer
+
+Lead with the metric contract: chronological holdout, blended/inferred/oracle comparison, confidence gate, cohort cuts, and the product decision each metric informs. Show that the dashboard is supporting evidence; the actual output is a customer-facing decision loop.
+
+### Data Engineer
+
+Lead with checksum-validated acquisition, DuckDB normalization, compressed Parquet, deterministic artifact generation, evaluator/public data separation, schema tests, and a browser-safe versioned bundle with no source-user IDs.
+
+### Data Scientist
+
+Lead with the 32D rating-derived embeddings, synthetic-household construction, constrained taste-lane inference, entropy-times-impact correction selection, correction curves, abstention, and the negative middle-activity cohort. Emphasize that weak identity recovery changed the product claim.
 
 ## Connect note
 

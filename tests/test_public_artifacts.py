@@ -19,10 +19,19 @@ def test_public_bundle_has_no_evaluator_identifiers() -> None:
 
 def test_public_bundle_contract_is_guided_and_synthetic() -> None:
     bundle = json.loads((ROOT / "public" / "data" / "demo-bundle.json").read_text())
-    assert bundle["schemaVersion"] == "1.0"
+    assert bundle["schemaVersion"] == "1.1"
     assert bundle["dataset"]["syntheticHouseholds"] is True
     assert bundle["account"]["modeledLaneCount"] == 3
     assert len(bundle["lanes"]) == 3
     assert len(bundle["correctionCandidates"]) == 3
     assert len({lane["name"] for lane in bundle["lanes"]}) == 3
     assert all(candidate["rating"] >= 4.0 for candidate in bundle["correctionCandidates"])
+    assert bundle["research"]["source"]["ratingEvents"] == 32_000_204
+    assert bundle["research"]["modelingCohort"]["embeddingDimensions"] == 32
+    assert bundle["research"]["householdDesign"]["households"] == 72
+    assert {row["dimension"] for row in bundle["research"]["cohortResults"]} == {
+        "activity",
+        "household size",
+        "overlap",
+        "sparsity",
+    }

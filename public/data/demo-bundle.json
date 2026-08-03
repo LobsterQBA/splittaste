@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "datasetSnapshotDate": "2023-10-13",
   "dataset": {
     "name": "MovieLens 32M",
@@ -1684,6 +1684,133 @@
         "ndcgAt10": 0.04465423051223372,
         "recallAt10": 0.0205339639553108,
         "assignmentAccuracy": 0.5370651187925451
+      }
+    ]
+  },
+  "research": {
+    "source": {
+      "ratingEvents": 32000204,
+      "tagApplications": 2000072,
+      "movies": 87585,
+      "anonymizedUsers": 200948
+    },
+    "modelingCohort": {
+      "ratingEvents": 3033208,
+      "users": 12000,
+      "movies": 31719,
+      "embeddingDimensions": 32,
+      "candidateCatalog": 15000
+    },
+    "householdDesign": {
+      "households": 72,
+      "sizes": [
+        2,
+        3,
+        4
+      ],
+      "overlapStrata": [
+        "clearly different",
+        "partially overlapping",
+        "highly similar"
+      ],
+      "fixedSeed": 3204218
+    },
+    "cohortResults": [
+      {
+        "dimension": "overlap",
+        "cohort": "clearly different",
+        "households": 24,
+        "ndcgBlended": 0.02236696191657425,
+        "ndcgSplitTaste": 0.0319529945464724,
+        "ari": 0.0846065551733262
+      },
+      {
+        "dimension": "overlap",
+        "cohort": "partially overlapping",
+        "households": 24,
+        "ndcgBlended": 0.03252619001361221,
+        "ndcgSplitTaste": 0.0405164385686379,
+        "ari": 0.06410343799408445
+      },
+      {
+        "dimension": "overlap",
+        "cohort": "highly similar",
+        "households": 24,
+        "ndcgBlended": 0.032657513650290244,
+        "ndcgSplitTaste": 0.04918821204447826,
+        "ari": 0.054534161128874575
+      },
+      {
+        "dimension": "household size",
+        "cohort": "2",
+        "households": 24,
+        "ndcgBlended": 0.03882326820848916,
+        "ndcgSplitTaste": 0.05098898202838404,
+        "ari": 0.10352869488797557
+      },
+      {
+        "dimension": "household size",
+        "cohort": "3",
+        "households": 24,
+        "ndcgBlended": 0.02945557281658243,
+        "ndcgSplitTaste": 0.044849325341893904,
+        "ari": 0.0641999195514896
+      },
+      {
+        "dimension": "household size",
+        "cohort": "4",
+        "households": 24,
+        "ndcgBlended": 0.01927182455540512,
+        "ndcgSplitTaste": 0.025819337789310615,
+        "ari": 0.03551553985682004
+      },
+      {
+        "dimension": "activity",
+        "cohort": "higher",
+        "households": 24,
+        "ndcgBlended": 0.01943640393504632,
+        "ndcgSplitTaste": 0.036292075574597564,
+        "ari": 0.03917752936144324
+      },
+      {
+        "dimension": "activity",
+        "cohort": "middle",
+        "households": 24,
+        "ndcgBlended": 0.03360815673370474,
+        "ndcgSplitTaste": 0.029219703909683592,
+        "ari": 0.04429714501993889
+      },
+      {
+        "dimension": "activity",
+        "cohort": "lower",
+        "households": 24,
+        "ndcgBlended": 0.034506104911725656,
+        "ndcgSplitTaste": 0.0561458656753074,
+        "ari": 0.1197694799149031
+      },
+      {
+        "dimension": "sparsity",
+        "cohort": "dense",
+        "households": 24,
+        "ndcgBlended": 0.02121256396063316,
+        "ndcgSplitTaste": 0.033917718682120915,
+        "ari": 0.03658425444087706
+      },
+      {
+        "dimension": "sparsity",
+        "cohort": "medium",
+        "households": 24,
+        "ndcgBlended": 0.035508226358999195,
+        "ndcgSplitTaste": 0.03725894526068698,
+        "ari": 0.052041222720309
+      },
+      {
+        "dimension": "sparsity",
+        "cohort": "sparse",
+        "households": 24,
+        "ndcgBlended": 0.030829875260844363,
+        "ndcgSplitTaste": 0.050480981216780664,
+        "ari": 0.11461867713509916
       }
     ]
   },

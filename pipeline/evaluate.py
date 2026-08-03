@@ -526,8 +526,28 @@ def build_demo_bundle(
     blended_columns = rank_catalog(private["baseline_profile"], data, catalog, excluded, limit=4)
     recommendation_columns = list(dict.fromkeys(recommendation_columns))
     curve_at_three = summary["correction_curve"][1]
+    dimension_labels = {
+        "overlap": "overlap",
+        "household_size": "household size",
+        "activity": "activity",
+        "sparsity": "sparsity",
+    }
+    cohort_results = []
+    for dimension, cohorts in summary["cohorts"].items():
+        for cohort, values in cohorts.items():
+            cohort_results.append(
+                {
+                    "dimension": dimension_labels[dimension],
+                    "cohort": str(cohort),
+                    "households": values["households"],
+                    "ndcgBlended": values["ndcg_blended"],
+                    "ndcgSplitTaste": values["ndcg_split"],
+                    "ari": values["ari"],
+                }
+            )
+
     return {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "datasetSnapshotDate": "2023-10-13",
         "dataset": {
             "name": "MovieLens 32M",
@@ -575,6 +595,32 @@ def build_demo_bundle(
             "deltaCi95": summary["ndcg_delta_ci95"],
             "claimSupported": summary["claim_supported"],
             "correctionCurve": summary["correction_curve"],
+        },
+        "research": {
+            "source": {
+                "ratingEvents": 32_000_204,
+                "tagApplications": 2_000_072,
+                "movies": 87_585,
+                "anonymizedUsers": 200_948,
+            },
+            "modelingCohort": {
+                "ratingEvents": int(len(data.ratings)),
+                "users": int(len(data.user_ids)),
+                "movies": int(len(data.movie_ids)),
+                "embeddingDimensions": int(data.item_embeddings.shape[1]),
+                "candidateCatalog": int(len(catalog)),
+            },
+            "householdDesign": {
+                "households": summary["household_count"],
+                "sizes": [2, 3, 4],
+                "overlapStrata": [
+                    "clearly different",
+                    "partially overlapping",
+                    "highly similar",
+                ],
+                "fixedSeed": SEED,
+            },
+            "cohortResults": cohort_results,
         },
         "disclosures": [
             "Synthetic household constructed from anonymized MovieLens rating events.",

@@ -8,13 +8,22 @@ No identity is inferred. No demographic or account-sharing claim is made.
 
 ![SplitTaste guided experience](docs/splittaste-desktop.png)
 
+## Review it in two passes
+
+This repository is intentionally organized for a Prime Video hiring manager:
+
+1. **Product demo — about 30 seconds.** Experience the household problem, answer two questions, and watch the recommendation row repair itself in place.
+2. **Data & evaluation — about 2 minutes.** Inspect the 32M-row source, reproducible pipeline, correction curve, cohort EDA, failure cases, and role-specific engineering evidence.
+
+The product is the decision loop. The analysis underneath shows whether that loop deserves to exist.
+
 ## The 30-second demo
 
 1. Start with the real-life moment: a friend watched on your TV without switching profiles.
 2. See why the account remembers the titles but not the social context.
 3. Choose which of three anonymous taste patterns feels most like yours.
 4. Answer whether one high-information title was your choice, probably a guest's, or uncertain.
-5. Compare the blended row with your repaired row, then open **Evidence** for the offline test and its boundaries.
+5. Compare the blended row with your repaired row, then scroll to **Data & evaluation** for the offline test and its boundaries.
 
 The interface uses titles, genres, and tags only. It does not use movie posters or external metadata calls.
 
@@ -34,6 +43,8 @@ The bootstrap 95% confidence interval for the post-correction NDCG@10 delta vers
 Corrections improved average NDCG@10 from 0.0387 at zero confirmations to 0.0406, 0.0420, and 0.0447 after 3, 5, and 10 confirmations.
 
 The more important limitation is persona recovery: ARI was 0.0677 and automatic lane-count accuracy was 31.9%. The system improved ranking without reliably recovering source individuals. That is why the product exposes editable **taste lanes**, not detected people.
+
+The on-page cohort explorer is part of the EDA, not decoration. It breaks results down by taste overlap, household size, activity, and sparsity. For example, the middle-activity cohort declined from 0.0336 to 0.0292 NDCG@10, while the higher- and lower-activity cohorts improved. That failure case is shown because averages alone are not enough for a product decision.
 
 ## Why this exists
 
