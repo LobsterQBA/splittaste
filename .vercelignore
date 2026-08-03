@@ -1,0 +1,15 @@
+.git/
+.gstack/
+.next/
+out/
+node_modules/
+.venv/
+.pytest_cache/
+.ruff_cache/
+**/__pycache__/
+data/raw/
+data/processed/
+data/evaluator/
+artifacts/private/
+*.pyc
+.DS_Store
