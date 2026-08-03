@@ -248,7 +248,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px soli
 .claim-dot { width: 8px; height: 8px; border-radius: 50%; background: #f76b56; margin-top: 5px; flex: 0 0 auto; }
 .claim-dot.supported { background: var(--lime); }
 
-footer { min-height: 190px; padding: 54px 6vw; display: grid; grid-template-columns: 1fr 1fr auto; gap: 50px; align-items: start; border-top: 1px solid var(--line); }
+footer { min-height: 190px; padding: 54px 6vw; display: grid; grid-template-columns: 1fr auto; gap: 50px; align-items: start; border-top: 1px solid var(--line); }
 footer p, footer a { color: var(--muted); font-size: 10px; }
 footer p { margin: 4px 0; }
 footer a { text-decoration: none; }

@@ -548,7 +548,7 @@ export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
 
       <ResearchSection bundle={bundle} />
 
-      <footer><div className="brand">SplitTaste<span>+</span></div><p>Independent, noncommercial research demo. Not affiliated with Amazon or Prime Video.</p><div className="footer-links"><a href="https://github.com/LobsterQBA" target="_blank" rel="noreferrer">GitHub ↗</a><a href="#home">Back to top ↑</a></div></footer>
+      <footer><div className="brand">SplitTaste<span>+</span></div><div className="footer-links"><a href="https://github.com/LobsterQBA/splittaste" target="_blank" rel="noreferrer">GitHub ↗</a><a href="#home">Back to top ↑</a></div></footer>
 
       <RepairDialog bundle={bundle} phase={phase} ownerLane={ownerLane} candidate={candidate} onLane={selectLane} onAnswer={answerGuest} onClose={() => setPhase("idle")} />
       </div>
