@@ -247,31 +247,6 @@ function RepairDialog({
   );
 }
 
-function Evidence({ bundle }: { bundle: DemoBundle }) {
-  const { evaluation } = bundle;
-  const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
-  return (
-    <details className="evidence-panel">
-      <summary><span>Open the evaluation</span><span>Data, metrics, limitations <b>+</b></span></summary>
-      <div className="evidence-grid">
-        <div className="metric-lead"><p>Offline NDCG@10</p><strong>{evaluation.ndcgSplitTaste.toFixed(3)}</strong><span>after three confirmations across {evaluation.householdCount} synthetic households</span></div>
-        <dl>
-          <div><dt>Blended account</dt><dd>{evaluation.ndcgBlended.toFixed(3)}</dd></div>
-          <div><dt>SplitTaste</dt><dd>{evaluation.ndcgSplitTaste.toFixed(3)}</dd></div>
-          <div><dt>Oracle bound</dt><dd>{evaluation.ndcgOracle.toFixed(3)}</dd></div>
-          <div><dt>Lane recovery ARI / NMI</dt><dd>{evaluation.ari.toFixed(2)} / {evaluation.nmi.toFixed(2)}</dd></div>
-          <div><dt>Abstention precision</dt><dd>{percent(evaluation.abstentionPrecision)}</dd></div>
-          <div><dt>Coverage</dt><dd>{percent(evaluation.abstentionCoverage)}</dd></div>
-        </dl>
-        <div className="claim-box">
-          <span className={evaluation.claimSupported ? "claim-dot supported" : "claim-dot"} />
-          <p><strong>{evaluation.claimSupported ? "Offline ranking improvement supported." : "Hypothesis under evaluation."}</strong> 95% CI for NDCG delta: [{evaluation.deltaCi95[0].toFixed(3)}, {evaluation.deltaCi95[1].toFixed(3)}]. This is not measured viewing, engagement, retention, or production lift.</p>
-        </div>
-      </div>
-    </details>
-  );
-}
-
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   const [visible, setVisible] = useState(false);
@@ -312,12 +287,12 @@ function RankingComparison({ bundle }: { bundle: DemoBundle }) {
   const max = Math.max(...rows.map((row) => row.value));
   return (
     <div ref={ref} className={`ranking-comparison ${visible ? "is-visible" : ""}`}>
-      <div className="chart-heading"><div><p>Held-out ranking quality</p><h3>Separating tastes recovered part of the signal.</h3></div><span>NDCG@10 · offline</span></div>
+      <div className="chart-heading"><div><p>Recommendation quality</p><h3>Did the separated tastes rank movies better?</h3></div><span>NDCG@10 · offline test</span></div>
       <div className="ranking-axis"><span>0</span><span>{max.toFixed(3)}</span></div>
       <div className="ranking-rows">
         {rows.map((row) => <div className="ranking-row" key={row.label}><strong>{row.label}</strong><div><i className={row.tone} style={{ "--bar-width": `${(row.value / max) * 100}%` } as React.CSSProperties} /></div><b>{row.value.toFixed(3)}</b></div>)}
       </div>
-      <p className="chart-note">The oracle uses evaluator-only source mappings. It is a ceiling for comparison, never part of the public product.</p>
+      <p className="chart-note">Higher is better. The oracle shows the best result we could expect if we already knew which source user rated each movie.</p>
     </div>
   );
 }
@@ -336,7 +311,7 @@ function CorrectionChart({ bundle }: { bundle: DemoBundle }) {
 
   return (
     <div ref={ref} className={`correction-chart ${visible ? "is-visible" : ""}`}>
-      <div className="chart-heading"><div><p>Correction curve</p><h3>A few answers move the ranking.</h3></div><span>NDCG@10 · offline</span></div>
+      <div className="chart-heading"><div><p>Correction curve</p><h3>Each answer helps the model adjust.</h3></div><span>NDCG@10 · offline test</span></div>
       <svg viewBox="0 0 510 190" role="img" aria-label="NDCG at 10 improves as confirmations increase from zero to ten">
         <title>Correction curve for zero, three, five, and ten confirmations</title>
         {[40, 75, 110, 145].map((y) => <line key={y} x1="42" x2="468" y1={y} y2={y} className="grid-line" />)}
@@ -362,7 +337,7 @@ function CohortExplorer({ rows }: { rows: CohortResult[] }) {
 
   return (
     <div ref={ref} className={`cohort-explorer ${visible ? "is-visible" : ""}`}>
-      <div className="chart-heading"><div><p>Cohort EDA</p><h3>The average hides where the idea struggles.</h3></div><span>72 households · 24 per displayed cohort</span></div>
+      <div className="chart-heading"><div><p>Household breakdown</p><h3>The average does not tell the whole story.</h3></div><span>72 synthetic households</span></div>
       <div className="cohort-tabs" role="tablist" aria-label="Cohort dimension">
         {dimensions.map((item) => <button key={item} role="tab" aria-selected={dimension === item} className={dimension === item ? "active" : ""} onClick={() => setDimension(item)}>{item}</button>)}
       </div>
@@ -382,7 +357,7 @@ function CohortExplorer({ rows }: { rows: CohortResult[] }) {
           );
         })}
       </div>
-      <p className="cohort-reading">Read this as directional offline evidence, not a population estimate. Switch cohorts to inspect heterogeneity and failure cases.</p>
+      <p className="cohort-reading">Switch the tabs to see where SplitTaste helped and where it did not. These are offline test results, not real customer behavior.</p>
     </div>
   );
 }
@@ -394,14 +369,15 @@ function ResearchSection({ bundle }: { bundle: DemoBundle }) {
   return (
     <section className="research-section" id="evidence">
       <Reveal className="essay-title">
-        <p>SplitTaste · a visual data essay</p>
-        <h2>When one profile<br /><em>remembers everyone.</em></h2>
-        <span>{format(source.ratingEvents)} rating events, {householdDesign.households} synthetic households, and one question: can a few corrections repair a mixed recommendation profile?</span>
+        <p>A MovieLens 32M experiment</p>
+        <h2>Can a shared profile<br /><em>be repaired?</em></h2>
+        <span>I used a public movie-rating dataset to test whether a few simple answers could improve recommendations on a mixed profile.</span>
       </Reveal>
 
       <Reveal className="essay-prose essay-lede">
-        <p>MovieLens does not contain households. It contains anonymous people rating movies. So I kept their real rating behavior, then deterministically combined two to four users into synthetic shared accounts.</p>
-        <p><strong>The account is synthetic. The preferences inside it are not.</strong> Original user mappings remain evaluator-only, and rating timestamps are treated as rating events—not viewing sessions.</p>
+        <p><strong>I started with MovieLens 32M.</strong> It contains {format(source.ratingEvents)} movie ratings from {source.anonymizedUsers.toLocaleString()} anonymous users. It does not contain households, profiles, or confirmed viewing history.</p>
+        <p>To recreate the shared-TV problem, I combined two to four real MovieLens users into one synthetic account. Their ratings stayed real; only the shared household was simulated.</p>
+        <p><strong>The question was simple:</strong> if one account contains several consistent tastes, can a few user answers separate them well enough to improve its recommendations?</p>
       </Reveal>
 
       <Reveal className="source-strip">
@@ -412,9 +388,9 @@ function ResearchSection({ bundle }: { bundle: DemoBundle }) {
       </Reveal>
 
       <Reveal className="essay-prose essay-question">
-        <p className="section-number">01 · Constructing the test</p>
-        <h3>First, I needed households that do not exist in the source data.</h3>
-        <p>Eligible users were split chronologically, embedded in {modelingCohort.embeddingDimensions} dimensions, and grouped into households with low, medium, or high taste overlap. A fixed seed makes the full experiment reproducible.</p>
+        <p className="section-number">01 · How I built the test</p>
+        <h3>I turned individual ratings into shared accounts.</h3>
+        <p>I kept earlier ratings for training and later ratings for testing. Then I represented movies in {modelingCohort.embeddingDimensions} dimensions and created households with low, medium, and high taste overlap. The fixed seed means the same households can be rebuilt every time.</p>
       </Reveal>
 
       <Reveal className="pipeline-flow">
@@ -425,41 +401,33 @@ function ResearchSection({ bundle }: { bundle: DemoBundle }) {
       </Reveal>
 
       <Reveal className="essay-prose essay-question">
-        <p className="section-number">02 · The cost of blending</p>
-        <h3>What gets lost when several coherent tastes become one average?</h3>
-        <p>I compared three conditions on held-out rating events: treating the household as one person, inferring editable taste lanes, and an oracle that knows the hidden source mapping.</p>
+        <p className="section-number">02 · The first question</p>
+        <h3>Does separating the tastes improve recommendations?</h3>
+        <p>I compared three versions: one blended profile, SplitTaste after three user answers, and an oracle that already knows the original user behind each rating.</p>
       </Reveal>
       <RankingComparison bundle={bundle} />
 
       <Reveal className="essay-prose essay-question">
-        <p className="section-number">03 · The smallest useful intervention</p>
-        <h3>How many questions does it take to move the ranking?</h3>
-        <p>The system asks about titles that are both uncertain and likely to change recommendations. Three confirmations produced a measurable offline improvement; more answers kept helping, but with diminishing returns.</p>
+        <p className="section-number">03 · The second question</p>
+        <h3>How many answers are enough?</h3>
+        <p>I chose movies where the model was uncertain and where an answer could change the recommendation list. Three answers improved the offline ranking. More answers still helped, but each extra answer added less.</p>
       </Reveal>
       <CorrectionChart bundle={bundle} />
 
       <Reveal className="essay-prose essay-question">
-        <p className="section-number">04 · Where the idea breaks</p>
-        <h3>The average result hides the difficult households.</h3>
-        <p>Switch the cohort below. SplitTaste helped many groups, but the middle-activity cohort regressed. That failure is product information, not a footnote.</p>
+        <p className="section-number">04 · Where did it struggle?</p>
+        <h3>Some households were easier than others.</h3>
+        <p>SplitTaste helped several groups, but it performed worse for the middle-activity cohort. That matters because a good average can still hide a poor experience for one group.</p>
       </Reveal>
       <CohortExplorer rows={bundle.research.cohortResults} />
 
-      <Reveal className="honesty-section">
-        <p className="section-number">05 · The honest boundary</p>
-        <h3>The model found useful tastes.<br />It did <em>not</em> recover people.</h3>
-        <div className="honesty-numbers"><div><strong>{bundle.evaluation.ari.toFixed(3)}</strong><span>ARI · source-person recovery</span></div><div><strong>{(bundle.evaluation.laneCountAccuracy * 100).toFixed(1)}%</strong><span>correct lane-count selection</span></div></div>
-        <p>That result changed the product. SplitTaste exposes voluntary, editable taste lanes—not “detected people,” demographics, family roles, or unauthorized account users.</p>
-      </Reveal>
-
       <Reveal className="essay-method">
-        <h3>Methodology & limitations</h3>
-        <p><strong>What this demonstrates.</strong> A reproducible ETL and evaluation path, a baseline–model–oracle comparison, cohort diagnostics, confidence gates, and a user-facing correction loop.</p>
-        <p><strong>What it does not demonstrate.</strong> Real household identification, confirmed watches, engagement lift, retention lift, production readiness, or any result using Prime Video data.</p>
-        <p><strong>What I would test next.</strong> A prospective study where people voluntarily label a small number of mixed-profile events, with calibration and abstention thresholds set before measuring recommendation quality.</p>
+        <h3>What this project shows</h3>
+        <p><strong>The data work:</strong> a reproducible pipeline from raw ratings to a browser-safe demo, with chronological testing and the original user mapping kept out of the public bundle.</p>
+        <p><strong>The product idea:</strong> ask for a small amount of context when it can meaningfully change the recommendation list.</p>
+        <p><strong>The limit:</strong> these are synthetic households and offline ranking results. They do not show real viewing, engagement, retention, or production impact.</p>
+        <p><strong>What I would test next:</strong> let volunteers label a few mixed-profile choices, then measure whether the calibrated recommendations actually feel more relevant.</p>
       </Reveal>
-
-      <Reveal><Evidence bundle={bundle} /></Reveal>
     </section>
   );
 }
@@ -575,13 +543,12 @@ export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
         <div className="story-copy"><p>The product idea</p><h2>Profiles prevent the mix.<br />SplitTaste repairs it.</h2></div>
         <div className="story-body">
           <p>On a couch, the lowest-friction action wins: people press play. SplitTaste looks for recurring taste patterns, then asks the account owner for just enough context to rebalance the home screen.</p>
-          <ul><li>User-controlled labels</li><li>Uncertain answers are allowed</li><li>Other tastes are kept, not erased</li></ul>
         </div>
       </section>
 
       <ResearchSection bundle={bundle} />
 
-      <footer><div className="brand">SplitTaste<span>+</span></div><p>Independent, noncommercial research demo. Not affiliated with Amazon or Prime Video.</p><a href="#home">Back to top ↑</a></footer>
+      <footer><div className="brand">SplitTaste<span>+</span></div><p>Independent, noncommercial research demo. Not affiliated with Amazon or Prime Video.</p><div className="footer-links"><a href="https://github.com/LobsterQBA" target="_blank" rel="noreferrer">GitHub ↗</a><a href="#home">Back to top ↑</a></div></footer>
 
       <RepairDialog bundle={bundle} phase={phase} ownerLane={ownerLane} candidate={candidate} onLane={selectLane} onAnswer={answerGuest} onClose={() => setPhase("idle")} />
       </div>
