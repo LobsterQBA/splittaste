@@ -97,12 +97,6 @@ flowchart LR
 - **Interaction layer:** the user voluntarily labels their own taste pattern; uncertainty and estimated ranking impact determine which title is worth asking about next. “Guest” is never inferred by the model.
 - **Product layer:** the public `DemoBundle` contains no MovieLens user IDs or evaluator ground truth. Recommendation recalculation is local and deterministic.
 
-## Visual system
-
-The product layer uses a restrained streaming-service interface with Manrope. The research layer switches into a film-journal treatment with Newsreader, warm paper tones, archival rules, large tally figures, and image-led transitions. The direction draws from MUBI Notebook's editorial cinema framing, Sight & Sound's poll archive, Letterboxd's image-rich annual statistics, and Criterion Current's spacious magazine layouts without reproducing any of their branding or copyrighted artwork.
-
-Six original 16:9 stills live under `public/images/film-stills/`. They are mapped deterministically by genre so every MovieLens title card has an image while the site makes no external poster requests.
-
 ## Evaluation contract
 
 Every source user is split chronologically at the rating-event grain. The last 20% of rating events is held out. A rating event is not treated as a confirmed watch or a watch session.
@@ -155,4 +149,4 @@ Those are product and analytics capabilities, not claims about any employer's in
 
 ## Status
 
-Portfolio MVP. Local validation is not production readiness, deployment, or real-user validation. This project is independent and is not affiliated with or endorsed by Amazon, Prime Video, the University of Minnesota, or GroupLens.
+Portfolio MVP. Local validation is not production readiness, deployment, or real-user validation.
