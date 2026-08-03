@@ -16,13 +16,14 @@ const laneCopy: Record<LaneId, { name: string; description: string }> = {
 };
 
 const cardThemes = ["ember", "ocean", "violet", "sand", "forest", "cobalt"] as const;
+const publicBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const filmStills = {
-  blueOrbit: "/images/film-stills/blue-orbit.webp",
-  lastWash: "/images/film-stills/last-wash.webp",
-  afterHours: "/images/film-stills/after-hours.webp",
-  morningCake: "/images/film-stills/morning-cake.webp",
-  coastalMap: "/images/film-stills/coastal-map.webp",
-  paperCity: "/images/film-stills/paper-city.webp",
+  blueOrbit: `${publicBasePath}/images/film-stills/blue-orbit.webp`,
+  lastWash: `${publicBasePath}/images/film-stills/last-wash.webp`,
+  afterHours: `${publicBasePath}/images/film-stills/after-hours.webp`,
+  morningCake: `${publicBasePath}/images/film-stills/morning-cake.webp`,
+  coastalMap: `${publicBasePath}/images/film-stills/coastal-map.webp`,
+  paperCity: `${publicBasePath}/images/film-stills/paper-city.webp`,
 } as const;
 
 function themeFor(movie: MovieVector) {
@@ -491,7 +492,7 @@ export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
 
       <section className="stream-hero" id="home">
         <div className="living-room-art" aria-hidden="true">
-          <div className="window-glow" /><div className="tv-frame"><div className="tv-light"><span>PLAY</span></div></div><div className="couch"><i /><i /></div><div className="room-shadow" />
+          <div className="window-glow" /><div className="tv-frame"><div className="tv-light"><Image src={filmStills.blueOrbit} alt="" fill priority sizes="48vw" /><span>PLAY</span></div></div><div className="couch"><i /><i /></div><div className="room-shadow" />
         </div>
         <div className="hero-vignette" />
         <div className="hero-copy">

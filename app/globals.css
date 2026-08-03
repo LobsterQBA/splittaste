@@ -74,7 +74,8 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px soli
 .living-room-art { position: absolute; inset: 0; background: linear-gradient(120deg, #32251d, #0b0c10 56%, #1a2334); }
 .window-glow { position: absolute; width: 42vw; height: 54vw; max-height: 780px; right: 5vw; top: -16vw; background: radial-gradient(ellipse, rgba(110,151,223,.82), rgba(55,72,106,.25) 38%, transparent 68%); transform: rotate(-9deg); filter: blur(4px); }
 .tv-frame { position: absolute; width: min(48vw, 720px); aspect-ratio: 16/9; right: 7vw; top: 18%; padding: 10px; border-radius: 10px; background: #050608; box-shadow: 0 45px 100px #000, 0 0 120px rgba(73,105,168,.34); transform: perspective(1100px) rotateY(-8deg); }
-.tv-light { width: 100%; height: 100%; position: relative; overflow: hidden; display: grid; place-items: center; background: url("/images/film-stills/blue-orbit.webp") center / cover; }
+.tv-light { width: 100%; height: 100%; position: relative; overflow: hidden; display: grid; place-items: center; background: #10141d; }
+.tv-light > img { object-fit: cover; }
 .tv-light::before { content: ""; position: absolute; inset: 0; background: linear-gradient(125deg, transparent 40%, rgba(255,255,255,.13) 41%, transparent 42%), linear-gradient(to top, rgba(5,8,15,.86), transparent 58%); }
 .tv-light span { position: absolute; z-index: 2; bottom: 8%; left: 6%; font-size: 11px; letter-spacing: .25em; color: rgba(255,255,255,.7); }
 .couch { position: absolute; right: -3vw; bottom: -9%; width: 63vw; height: 37%; border-radius: 48% 22% 0 0; background: linear-gradient(165deg, #211f20, #08090b 70%); box-shadow: inset 0 18px 30px rgba(255,255,255,.025); }
