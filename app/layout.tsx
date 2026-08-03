@@ -1,4 +1,5 @@
-import "@fontsource-variable/dm-sans";
+import "@fontsource-variable/manrope";
+import "@fontsource-variable/newsreader";
 import "./globals.css";
 import type { Metadata } from "next";
 

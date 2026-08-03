@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { bestOtherLane, laneRecommendations, type Assignments } from "@/lib/recommend";
 import type { CohortResult, DemoBundle, LaneId, MovieVector, TasteLane } from "@/types/demo";
 
@@ -14,10 +15,32 @@ const laneCopy: Record<LaneId, { name: string; description: string }> = {
 };
 
 const cardThemes = ["ember", "ocean", "violet", "sand", "forest", "cobalt"] as const;
+const filmStills = {
+  blueOrbit: "/images/film-stills/blue-orbit.webp",
+  lastWash: "/images/film-stills/last-wash.webp",
+  afterHours: "/images/film-stills/after-hours.webp",
+  morningCake: "/images/film-stills/morning-cake.webp",
+  coastalMap: "/images/film-stills/coastal-map.webp",
+  paperCity: "/images/film-stills/paper-city.webp",
+} as const;
 
 function themeFor(movie: MovieVector) {
   const seed = [...movie.movieId].reduce((sum, char) => sum + char.charCodeAt(0), 0);
   return cardThemes[seed % cardThemes.length];
+}
+
+function stillFor(movie: MovieVector) {
+  const genres = new Set(movie.genres);
+  if (genres.has("Animation") || genres.has("Fantasy")) return filmStills.paperCity;
+  if (genres.has("Sci-Fi")) return filmStills.blueOrbit;
+  if (genres.has("Crime") || genres.has("Thriller") || genres.has("Horror")) return filmStills.afterHours;
+  if (genres.has("Comedy")) return filmStills.morningCake;
+  if (genres.has("Adventure") || genres.has("Action")) return filmStills.coastalMap;
+  return Number(movie.movieId.replace(/\D/g, "").slice(-1) || 0) % 2 ? filmStills.lastWash : filmStills.coastalMap;
+}
+
+function laneStill(lane: LaneId) {
+  return lane === "lane-a" ? filmStills.afterHours : lane === "lane-b" ? filmStills.blueOrbit : filmStills.lastWash;
 }
 
 function ArrowIcon() {
@@ -34,7 +57,7 @@ function MovieCard({ movie, index, signal, compact = false }: { movie: MovieVect
   return (
     <article className={`movie-card theme-${themeFor(movie)} ${compact ? "compact" : ""}`}>
       <div className="movie-art" aria-hidden="true">
-        <i /><i /><i />
+        <Image className="movie-still" src={stillFor(movie)} alt="" fill priority={index === 1} sizes={compact ? "370px" : "(max-width: 600px) 72vw, 19vw"} />
         <span className="art-mark">{String(index ?? 1).padStart(2, "0")}</span>
         <strong>{movie.title}</strong>
       </div>
@@ -70,6 +93,7 @@ function LaneOption({ lane, selected, onSelect }: { lane: TasteLane; selected: b
       aria-pressed={selected}
     >
       <span className="lane-preview" aria-hidden="true">
+        <Image src={laneStill(lane.id)} alt="" fill sizes="300px" />
         {lane.anchorTitles.slice(0, 3).map((title, index) => <i key={title} className={`preview-${index + 1}`}>{title.slice(0, 1)}</i>)}
       </span>
       <span className="lane-copy"><strong>{copy.name}</strong><small>{copy.description}</small></span>
@@ -260,9 +284,14 @@ function ResearchSection({ bundle }: { bundle: DemoBundle }) {
   return (
     <section className="research-section" id="evidence">
       <header className="research-hero">
-        <div><p>02 · Data & evaluation</p><h2>The demo is the front door.<br />This is the work behind it.</h2></div>
-        <p>Built for a hiring manager who wants to inspect data engineering, modeling choices, product metrics, and what failed—not just click through a polished prototype.</p>
+        <div className="research-title"><p>SplitTaste research journal · Issue 01</p><h2>Behind the<br /><em>home row.</em></h2><span>A MovieLens field study in synthetic shared households</span></div>
+        <figure className="research-hero-still">
+          <Image src={filmStills.blueOrbit} alt="An original cinematic illustration of a radio observatory beneath a large moon" width={1600} height={900} sizes="(max-width: 900px) 100vw, 46vw" />
+          <figcaption><b>Figure 01</b><span>The signal is real. The household context is synthetic.</span></figcaption>
+        </figure>
       </header>
+
+      <div className="research-deck"><p>The demo is the front door. This is the work behind it.</p><span>Built for a hiring manager who wants to inspect data engineering, modeling choices, product metrics, and what failed—not just click through a polished prototype.</span></div>
 
       <div className="data-scale-grid">
         <div className="scale-intro"><p>Source dataset</p><h3>MovieLens 32M</h3><span>Official public research dataset</span></div>
@@ -286,6 +315,13 @@ function ResearchSection({ bundle }: { bundle: DemoBundle }) {
       </div>
 
       <div className="research-charts"><CorrectionChart bundle={bundle} /><CohortExplorer rows={bundle.research.cohortResults} /></div>
+
+      <div className="research-contact-sheet" aria-label="Original illustrative film stills">
+        <figure><Image src={filmStills.morningCake} alt="An original cinematic illustration of a bakery in morning light" width={1600} height={900} sizes="33vw" /><figcaption><b>01</b><span>Raw taste signals</span></figcaption></figure>
+        <figure><Image src={filmStills.lastWash} alt="An original cinematic illustration of two people in a late-night laundromat" width={1600} height={900} sizes="33vw" /><figcaption><b>02</b><span>Mixed household context</span></figcaption></figure>
+        <figure><Image src={filmStills.afterHours} alt="An original cinematic illustration of an empty roadside diner" width={1600} height={900} sizes="33vw" /><figcaption><b>03</b><span>User-guided repair</span></figcaption></figure>
+      </div>
+      <p className="art-credit">Original illustrative stills generated for this noncommercial demo. They are not official artwork for the MovieLens titles shown above.</p>
 
       <div className="finding-grid">
         <article><p>What worked</p><strong>Ranking improved offline after a small number of confirmations.</strong><span>The bootstrap 95% interval for the three-confirmation NDCG delta stayed above zero.</span></article>
@@ -376,6 +412,7 @@ export function SplitTasteExperience({ bundle }: { bundle: DemoBundle }) {
       </section>
 
       <div className="catalog" id="browse">
+        <p className="catalog-art-note">Real MovieLens titles · original illustrative stills, not official film art</p>
         <ContentRail title="Recently watched on this profile" note="One account. More than one taste." movies={recentMovies} signalFirst />
 
         <section className={`content-rail home-recommendations ${complete && !showBefore ? "repaired" : ""}`} ref={homeRowRef} aria-live="polite">

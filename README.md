@@ -27,6 +27,8 @@ The product is the decision loop. The analysis underneath shows whether that loo
 
 The interface uses titles, genres, and tags only. It does not use movie posters or external metadata calls.
 
+The titles shown in the rails are real MovieLens catalog titles. Their imagery is a lightweight set of original illustrative stills generated specifically for this noncommercial demo; it is not official poster or production artwork and is intentionally reused by genre.
+
 ![Before and after recommendation repair](docs/splittaste-results.png)
 
 ## Measured result
@@ -94,6 +96,12 @@ flowchart LR
 - **Model layer:** Truncated SVD learns 32-dimensional movie representations from a deterministic user cohort. Synthetic households combine 2–4 real anonymized rating histories.
 - **Interaction layer:** the user voluntarily labels their own taste pattern; uncertainty and estimated ranking impact determine which title is worth asking about next. “Guest” is never inferred by the model.
 - **Product layer:** the public `DemoBundle` contains no MovieLens user IDs or evaluator ground truth. Recommendation recalculation is local and deterministic.
+
+## Visual system
+
+The product layer uses a restrained streaming-service interface with Manrope. The research layer switches into a film-journal treatment with Newsreader, warm paper tones, archival rules, large tally figures, and image-led transitions. The direction draws from MUBI Notebook's editorial cinema framing, Sight & Sound's poll archive, Letterboxd's image-rich annual statistics, and Criterion Current's spacious magazine layouts without reproducing any of their branding or copyrighted artwork.
+
+Six original 16:9 stills live under `public/images/film-stills/`. They are mapped deterministically by genre so every MovieLens title card has an image while the site makes no external poster requests.
 
 ## Evaluation contract
 
