@@ -4,7 +4,12 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Analytics, type AnalyticsProps } from "@vercel/analytics/next";
 
-const analyticsOrigin = "https://splittaste.vercel.app";
+const analyticsProxy = "/__analytics/splittaste";
+
+function proxiedAnalyticsPath(value: string) {
+  const pathname = value.startsWith("http") ? new URL(value).pathname : `/${value.replace(/^\//, "")}`;
+  return `${analyticsProxy}${pathname}`;
+}
 
 function analyticsProps(): AnalyticsProps {
   const configString =
@@ -16,7 +21,7 @@ function analyticsProps(): AnalyticsProps {
   return Object.fromEntries(
     ["scriptSrc", "viewEndpoint", "eventEndpoint", "sessionEndpoint"]
       .filter((key) => config[key])
-      .map((key) => [key, new URL(config[key], analyticsOrigin).toString()]),
+      .map((key) => [key, proxiedAnalyticsPath(config[key])]),
   );
 }
 
